@@ -134,7 +134,16 @@ namespace OS
             {
                 List<byte> chunk = bytes.GetRange(i, Math.Min(32, bytes.Count - i));
                 Directory_Entry entry = BytesToDirectory_Entry(chunk);
-                dirsFiles.Add(entry);
+                string name = new string(entry.Dir_Namee).Trim();
+                if (name == "")
+                {
+                    continue;
+                }
+                else
+                {
+                    dirsFiles.Add(entry);
+
+                }
             }
 
             return dirsFiles;

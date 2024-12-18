@@ -40,7 +40,6 @@ namespace OS
         {
 
             Root = new Directory("N",0x10, 5, null);
-            //Root.Write_Directory();
             Root.Read_Directory();
 
         }

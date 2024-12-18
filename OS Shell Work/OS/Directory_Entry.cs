@@ -19,14 +19,7 @@ namespace OS
 
             
             string DIR_NAME = new string(Dir_Name);
-            assign_DirName(DIR_NAME);
-            //string s = new string(Dir_Name);
-            //if (Dir_Name.Length < 11)
-            //{
-            //    for (int i = Dir_Name.Length; i < 11; i++)
-            //        s += (char)' ';
-            //}
-            //this.Dir_Namee = s.ToCharArray();
+            assign_DirName(DIR_NAME);         
             this.dir_Attr = dir_Attribute;
             this.dir_First_Cluster = f_Cluster;
            
@@ -71,11 +64,11 @@ namespace OS
                 for (int i = cleaned.Length; i < 11; i++)
                     cleaned += " ";
             }
-            return cleaned.Trim();
+            return cleaned;
         }
         public void assign_DirName(string name)
         {
-            string cleaned_Name = clean_The_Name(name).Trim();
+            string cleaned_Name = clean_The_Name(name);
 
            
             if (cleaned_Name.Length > 11)
@@ -87,8 +80,7 @@ namespace OS
                 cleaned_Name += " ";
             }
 
-            //string dir_Name = cleaned_Name.PadRight(11);
-            //Array.Copy(dir_Name.ToCharArray(), Dir_Namee, dir_Name.Length);
+            
             Array.Clear(Dir_Namee, 0, Dir_Namee.Length); // Clear the array
             Array.Copy(cleaned_Name.ToCharArray(), Dir_Namee, cleaned_Name.Length);
         }

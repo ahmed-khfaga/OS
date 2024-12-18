@@ -123,145 +123,63 @@ namespace OS
 
            
         }
-        #region write
-        //public void WriteDirectory()
-        //{
-        //    List<byte> DirData = new List<byte>();
-
-        //    foreach (Directory_Entry d in DirectoryTable)
-        //    {
-        //        DirData.AddRange(Converter.Directory_EntryToBytes(d));
-        //    }
-
-        //    int totalClusterNeed = (int)Math.Ceiling((double)DirData.Count / Virtual_Disk.clusterSize);
-        //    int [] availableClusters = (int[])Mini_FAT.get_Availabel_Cluster();
-
-        //    if (availableClusters.Length < totalClusterNeed)
-        //    {
-        //        Console.WriteLine("Not enough space to write!");
-        //        return;
-        //    }
-
-        //    Empty_My_Clusters();
-
-        //    dir_First_Cluster = Mini_FAT.get_Availabel_Cluster();
-
-        //    if (dir_First_Cluster == -1)
-        //    {
-        //        Console.WriteLine("No space left.");
-        //        return;
-        //    }
-
-        //    int bytesWritten = 0;
-        //    int currentCluster = dir_First_Cluster;
-
-        //    while (bytesWritten < DirData.Count)
-        //    {
-        //        int bytesToWrite = Math.Min(DirData.Count - bytesWritten, Virtual_Disk.clusterSize);
-        //        byte[] dataToWrite = new byte[Virtual_Disk.clusterSize];
-
-        //        Array.Copy(DirData.ToArray(), bytesWritten, dataToWrite, 0, bytesToWrite);
-        //        Virtual_Disk.write_Cluster(dataToWrite, currentCluster);
-
-        //        bytesWritten += bytesToWrite;
-
-        //        if (bytesWritten < DirData.Count)
-        //        {
-        //            int nextCluster = Mini_FAT.get_Availabel_Cluster();
-        //            if (nextCluster != -1)
-        //            {
-        //                Mini_FAT.setNext(currentCluster, nextCluster);
-        //                currentCluster = nextCluster;
-        //            }
-        //            else
-        //            {
-        //                Mini_FAT.setNext(currentCluster, -1);
-        //                break;
-        //            }
-        //        }
-        //        else
-        //        {
-        //            Mini_FAT.setNext(currentCluster, -1);
-        //        }
-        //    }
-
-        //    if (Parent != null)
-        //    {
-        //        int parentIndex = Parent.DirectoryTable.FindIndex(e => new string(e.Dir_Namee) == new string (this.Dir_Namee));
-        //        if (parentIndex != -1)
-        //        {
-        //            Parent.DirectoryTable[parentIndex] = this.Get_Directory_Entry();
-        //            Parent.WriteDirectory();
-        //        }
-        //    }
-
-        //    Mini_FAT.write_FAT();
-        //} 
-        #endregion
-
         public void Write_Directory()
         {
-
             Directory_Entry o = Get_Directory_Entry();
-            byte[] dirs_Or_Files_Bytes = new byte[DirectoryTable.Count * 32];//بعد كل ده كل البيانات متخزنى هنا
-            
-            List<byte> Directory_entry_byte = new List<byte>(32);
-           
-            for (int i=0;i<DirectoryTable.Count;i++)
-            {
-                Directory_entry_byte = Converter.Directory_EntryToBytes(DirectoryTable[i]);
 
-                for(int j = i * 32 , c = 0 ; c < 32 ; c++ , j++)
-                {
-                    dirs_Or_Files_Bytes[j] = Directory_entry_byte[c]; // يخزن كل الداتا بتاعت الانتري جوه الاراي 
-                }
-            }
+            List<byte> dirs_Or_Files_Bytes = Converter.Directory_EntriesToBytes(DirectoryTable);
 
-            List<byte[]> bytes = Converter.SplitBytes(dirs_Or_Files_Bytes);
+            List<byte[]> bytes = Converter.SplitBytes(dirs_Or_Files_Bytes.ToArray());
+
             if (this.dir_First_Cluster != 0)
             {
-                Empty_My_Clusters();
-                cluster_Index = Mini_FAT.get_Availabel_Cluster();
-                this.dir_First_Cluster = cluster_Index;
+                Empty_My_Clusters();  
+                cluster_Index = Mini_FAT.get_Availabel_Cluster();  
+                this.dir_First_Cluster = cluster_Index;  
             }
             else
             {
-                cluster_Index = Mini_FAT.get_Availabel_Cluster();
-                this.dir_First_Cluster = cluster_Index;
+                cluster_Index = Mini_FAT.get_Availabel_Cluster(); 
+                this.dir_First_Cluster = cluster_Index;  
             }
-            int last_Cluster = -1;
+
+            int last_Cluster = -1;  
+
             for (int i = 0; i < bytes.Count; i++)
             {
                 if (cluster_Index != -1)
                 {
                     Virtual_Disk.write_Cluster(bytes[i], cluster_Index);
+
                     Mini_FAT.setNext(cluster_Index, -1);
+
                     if (last_Cluster != -1)
                     {
                         Mini_FAT.setNext(last_Cluster, cluster_Index);
                     }
-                   // Mini_FAT.write_FAT();
+
                     last_Cluster = cluster_Index;
+
                     cluster_Index = Mini_FAT.get_Availabel_Cluster();
                 }
             }
+
             if (DirectoryTable.Count == 0)
             {
                 if (Parent != null)
                 {
-                    // Mini_FAT.setNext(dir_First_Cluster, 0);
                     Empty_My_Clusters();
-                    dir_First_Cluster = 0;
+                    dir_First_Cluster = 0; 
                 }
             }
+
             Directory_Entry n = Get_Directory_Entry();
             if (this.Parent != null)
             {
                 this.Parent.Update_Content(o, n);
-               // this.Parent.Write_Directory();
             }
-            Mini_FAT.write_FAT();
 
+            Mini_FAT.write_FAT();
         }
 
 
@@ -269,7 +187,7 @@ namespace OS
         {
             Read_Directory();
             char[] old_Name = OLD.Dir_Namee;
-            string O_Name = new string(old_Name); // convert from char to string 
+            string O_Name = new string(old_Name);
             int index = search_Directory(O_Name);
             if (index != -1)
             {
@@ -307,12 +225,7 @@ namespace OS
         }
         public void remove_Entry(Directory_Entry d)
         {
-            //Read_Directory();
-            //string name = new string(d.Dir_Namee);
-            //int index = search_Directory(name);
-            //DirectoryTable.RemoveAt(index);
-            //Write_Directory();
-            //Read_Directory();
+            
             if(DirectoryTable.Count() != 0)
             {
                 string o = new string(d.Dir_Namee);
