@@ -7,7 +7,7 @@ namespace OS
     {
         public static Directory? Root;
         public static Directory currentDirectory;
-        public static string path = string.Empty;
+        public static string path = "disk";
 
         static void Main(string[] args)
         {
@@ -16,17 +16,13 @@ namespace OS
             Console.WriteLine("developed by AHMED KHFAGA Under Supervision: DR – KHALED GAMAL ELTURKY \n");
             Console.WriteLine();
             Console.WriteLine();
-            initialize();
-            InitializeFileSystem();
-            currentDirectory = Root;
-        
-            Path();
+            Mini_FAT.InitializeOrOpenFileSystem(path);
+            currentDirectory = Mini_FAT.Root;
 
+            path = new string(currentDirectory.Dir_Namee).Trim('\0');
             while (true)
             {
-                Console.Write(path);
-                Console.Write(">>");
-
+                Console.Write(path+ ">>");               
                 string Command = Console.ReadLine();
                 var command = new Command_Line(Command);
 
@@ -36,29 +32,11 @@ namespace OS
 
         }
 
-        static void InitializeFileSystem()
-        {
+       
 
-            Root = new Directory("N",0x10, 5, null);
-            Root.Read_Directory();
 
-        }
 
-        static void Path()
-        {
-            if (Root != null)
-            {
-                string s = new(currentDirectory?.Dir_Namee);
-                path = s.Trim();
-            }
-        }
-
-        public static void initialize()
-        {
-            Mini_FAT.InitializeOrOpenFileSystem("myDisk");
-
-        }
-     
+       
         
 
     }

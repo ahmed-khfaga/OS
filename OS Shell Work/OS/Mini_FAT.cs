@@ -9,8 +9,8 @@ namespace OS
     class Mini_FAT
     {
         public static int[] FAT = new int[1024];
-       
-        
+
+        public static Directory Root;
         public static void Initialization()
         {
             FAT[0] = -1;
@@ -26,13 +26,7 @@ namespace OS
 
         public static byte[] create_Super_Block()
         {
-            // byte[] bytes = new byte[1024];
-            // for(int i = 0;i < 1024;i++)
-            // {
-            //     bytes[i] = 0;
-            // }
-
-            //return bytes; // initializes all elements to 0
+            
             byte[] bytes = new byte[1024];
             for (int i = 0; i < bytes.Length; i++)
             {
@@ -107,7 +101,7 @@ namespace OS
         public static int get_Availabel_Clusters()
         {
             int counter = 0;
-            for (int i = 0; i < 1024; i++)
+            for (int i = 5; i < 1024; i++)
             {
                 if (FAT[i] == 0)
                 {
@@ -118,7 +112,7 @@ namespace OS
         }
         public static int get_Availabel_Cluster()
         {
-            for (int i = 0; i < 1024; i++)
+            for (int i = 5; i < 1024; i++)
             {
                 if (FAT[i] == 0)
                 {
@@ -136,24 +130,12 @@ namespace OS
 
         public static void InitializeOrOpenFileSystem(string name)
         {
-            #region ss
-            //Virtual_Disk.create_Or_Open_Disk(name);
-            //if (Virtual_Disk.is_New())
-            //{
-            //    byte[] superBlock = Converter.StringToByteArray(create_Super_Block());//create_Super_Block();
-            //    Virtual_Disk.write_Cluster(superBlock, 0);
-            //    Initialization();
-            //    write_FAT();
-            //}
-            //else
-            //    readFAT(); 
-            #endregion
+           
 
             Virtual_Disk.create_Or_Open_Disk(name);
 
             if (Virtual_Disk.is_New())
             {
-               // byte[] superBlock = Converter.StringToByteArray(create_Super_Block());
                 byte[] superBlock = create_Super_Block();
 
                 Virtual_Disk.write_Cluster(superBlock, 0);
@@ -161,26 +143,15 @@ namespace OS
                 Initialization();
 
                 write_FAT();
-                
-                #region s
-                //byte[] emptyCluster = new byte[1024];
-                //for (int clusterIndex = 5; clusterIndex < 1024; clusterIndex++)
-                //{
-                //    byte[] data = Encoding.ASCII.GetBytes("0");
-
-                //    StringBuilder hashstringsdata = new StringBuilder();
-
-                //    for (int j = 0; j < FAT.Length; j++)
-                //    {
-                //        hashstringsdata.Append("0");
-                //    }
-                //    Virtual_Disk.write_Cluster(Converter.StringToByteArray(hashstringsdata.ToString()), clusterIndex);
-                //} 
-                #endregion
+                Root = new Directory("N:".PadRight(11,'\0'), 0x10, 5, null);
+                Root.Write_Directory();
             }
             else
             {
                 readFAT();
+                Root = new Directory("N:".PadRight(11, '\0'), 0x10, 5, null);
+                Root.Read_Directory();
+
             }
 
         }

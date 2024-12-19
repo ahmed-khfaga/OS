@@ -51,13 +51,7 @@ namespace OS
                  isnew = true;                    
                 
             }
-            #region ss
-            //if(isnew==false) 
-            //{
-            //    FileStream file= File.OpenRead(path);
-            //    //disk = disk.OpenRead(path);
-            //} 
-            #endregion
+          
             else
             {
 

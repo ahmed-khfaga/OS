@@ -40,3 +40,17 @@ D:\3th sem\OS Shell\OS\obj\Debug\net8.0\refint\OS.dll
 D:\3th sem\OS Shell\OS\obj\Debug\net8.0\OS.pdb
 D:\3th sem\OS Shell\OS\obj\Debug\net8.0\OS.genruntimeconfig.cache
 D:\3th sem\OS Shell\OS\obj\Debug\net8.0\ref\OS.dll
+D:\OS Shell Work\OS\bin\Debug\net8.0\OS.exe
+D:\OS Shell Work\OS\bin\Debug\net8.0\OS.deps.json
+D:\OS Shell Work\OS\bin\Debug\net8.0\OS.runtimeconfig.json
+D:\OS Shell Work\OS\bin\Debug\net8.0\OS.dll
+D:\OS Shell Work\OS\bin\Debug\net8.0\OS.pdb
+D:\OS Shell Work\OS\obj\Debug\net8.0\OS.GeneratedMSBuildEditorConfig.editorconfig
+D:\OS Shell Work\OS\obj\Debug\net8.0\OS.AssemblyInfoInputs.cache
+D:\OS Shell Work\OS\obj\Debug\net8.0\OS.AssemblyInfo.cs
+D:\OS Shell Work\OS\obj\Debug\net8.0\OS.csproj.CoreCompileInputs.cache
+D:\OS Shell Work\OS\obj\Debug\net8.0\OS.dll
+D:\OS Shell Work\OS\obj\Debug\net8.0\refint\OS.dll
+D:\OS Shell Work\OS\obj\Debug\net8.0\OS.pdb
+D:\OS Shell Work\OS\obj\Debug\net8.0\OS.genruntimeconfig.cache
+D:\OS Shell Work\OS\obj\Debug\net8.0\ref\OS.dll

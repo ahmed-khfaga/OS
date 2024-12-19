@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection.PortableExecutable;
 using System.Text;
@@ -254,111 +255,158 @@ namespace OS
                 }
             }
             #region cd command
-            //else if (commandArray_2Agr[0].ToLower() == "cd")
-            //{
-            //    string directoryName = commandArray_2Agr[1];
-
-
-            //    if (directoryName == "..")
-            //    {
-
-            //        if (Program.currentDirectory.Parent != null)
-            //        {
-            //            Program.currentDirectory = Program.currentDirectory.Parent;  
-
-            //            if (Program.currentDirectory == Program.Root)
-            //            {
-            //                Program.path = new string(Program.Root.Dir_Namee); 
-            //            }
-            //            else
-            //            {
-            //                int lastBackslashIndex = Program.path.LastIndexOf(@"\");
-
-            //                if (lastBackslashIndex >= 0)
-            //                {
-            //                    Program.path = Program.path.Substring(0, lastBackslashIndex);  
-            //                }
-            //            }
-
-            //            Console.WriteLine($"Moved to parent directory: {new string(Program.currentDirectory.Dir_Namee)}");
-            //        }
-            //        else
-            //        {
-            //            Console.WriteLine("Error: Already at the root directory.");
-            //        }
-            //    }
-            //    else
-            //    {
-
-            //        int index = Program.currentDirectory.search_Directory(directoryName);
-            //        if (index != -1)
-            //        {
-            //            byte Attribute = Program.currentDirectory.DirectoryTable[index].dir_Attr;
-            //            if (Attribute == 0x10)
-            //            {
-            //                int FirstCluster = Program.currentDirectory.DirectoryTable[index].dir_First_Cluster;
-
-            //                Directory d = new Directory(directoryName, 0x10, FirstCluster, Program.currentDirectory); 
-            //                Program.currentDirectory = d;  
-            //                Program.path += @"\" + directoryName;
-
-            //                Program.currentDirectory.Read_Directory();  
-            //                Console.WriteLine($"Moved to directory: {directoryName}");
-            //            }
-            //            else
-            //            {
-            //                Console.WriteLine("Error: Specified folder isn't a directory, it's a file.");
-            //            }
-            //        }
-            //        else
-            //        {
-            //            Console.WriteLine("Error: Directory does not exist.");
-            //        }
-            //    }
-            //} 
-            #endregion
             else if (commandArray_2Agr[0].ToLower() == "cd")
             {
-                string k = new string(Program.Root.Dir_Namee);
-                string l = new string(commandArray_2Agr[1]);
-                var x = commandArray_2Agr[1].Length;
-                if (x < 11)
-                {
-                    for (int i = x; i < 11; i++)
-                    {
-                        l += " ";
+                string directoryName = commandArray_2Agr[1];
 
-                    }
-                }
-                var temp = Program.Root;
-                if (commandArray_2Agr[1] == "..")
+
+                if (directoryName == "..")
                 {
-                    Program.currentDirectory = temp;
-                    string back = new string(Program.currentDirectory.Dir_Namee);
-                    Program.path = back;
-                }
-                int index = Program.currentDirectory.search_Directory(commandArray_2Agr[1]);
-                if (index != -1)
-                {
-                    byte Attribute = Program.currentDirectory.DirectoryTable[index].dir_Attr;
-                    if (Attribute == 0x10)
+
+                    if (Program.currentDirectory.Parent != null)
                     {
-                        int FirstCluster = Program.currentDirectory.DirectoryTable[index].dir_First_Cluster;
-                        Directory d = new Directory(commandArray_2Agr[1].ToLower(),0x10, FirstCluster, Program.currentDirectory);
-                        Program.currentDirectory = d;
-                        Program.path += "\\" + commandArray_2Agr[1].ToString();
-                        Program.currentDirectory.Read_Directory();
+                        Program.currentDirectory = Program.currentDirectory.Parent;
+
+                        if (Program.currentDirectory == Program.Root)
+                        {
+                            Program.path = new string(Program.Root.Dir_Namee);
+                        }
+                        else
+                        {
+                            int lastBackslashIndex = Program.path.LastIndexOf(@"\");
+
+                            if (lastBackslashIndex >= 0)
+                            {
+                                Program.path = Program.path.Substring(0, lastBackslashIndex);
+                            }
+                        }
+
+                        Console.WriteLine($"Moved to parent directory: {new string(Program.currentDirectory.Dir_Namee)}");
                     }
                     else
                     {
-                        Console.WriteLine("Specified Folder isn't exist , it's File.");
+                        Console.WriteLine("Error: Already at the root directory.");
                     }
                 }
-                else if (l.Length != k.Length)
+                else
                 {
-                    Console.WriteLine("Folder Name isn't Exist");
+
+                    int index = Program.currentDirectory.search_Directory(directoryName);
+                    if (index != -1)
+                    {
+                        byte Attribute = Program.currentDirectory.DirectoryTable[index].dir_Attr;
+                        if (Attribute == 0x10)
+                        {
+                            int FirstCluster = Program.currentDirectory.DirectoryTable[index].dir_First_Cluster;
+
+                            Directory d = new Directory(directoryName, 0x10, FirstCluster, Program.currentDirectory);
+                            Program.currentDirectory = d;
+                            Program.path += @"\" + directoryName;
+
+                            Program.currentDirectory.Read_Directory();
+                            Console.WriteLine($"Moved to directory: {directoryName}");
+                        }
+                        else
+                        {
+                            Console.WriteLine("Error: Specified folder isn't a directory, it's a file.");
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine("Error: Directory does not exist.");
+                    }
                 }
             }
+            #endregion
+
+            #region import
+            //else if (commandArray_2Agr[0].ToLower() == "import")
+            //{
+            //    string filePath = commandArray_2Agr[1];
+
+            //    // Handle paths enclosed in quotes (remove quotes)
+            //    if (filePath.StartsWith("\"") && filePath.EndsWith("\""))
+            //    {
+            //        filePath = filePath.Substring(1, filePath.Length - 2);
+            //    }
+
+            //    try
+            //    {
+            //        if (!File.Exists(filePath))
+            //        {
+            //            Console.WriteLine("The file does not exist.");
+            //            return;
+            //        }
+
+
+            //        string fileName = Path.GetFileName(filePath); // Use Path.GetFileName for reliability
+
+
+            //        string fileContent = File.ReadAllText(filePath);
+            //        int fileSize = fileContent.Length;
+
+
+
+            //        int indexFile = Program.currentDirectory.search_Directory(fileName);
+            //        if (indexFile != -1)
+            //        {
+            //            Console.WriteLine("A file or directory with that name already exists.");
+            //            return;
+            //        }
+
+
+
+            //        File_Entry newFile = new File_Entry(fileName.ToCharArray(), 0x0,0, Program.currentDirectory, fileContent);
+            //        newFile.Write_File_Content();//most important line no remove or delete : the file content is now saved
+            //        Program.currentDirectory.add_Entry(newFile); // Add the new file entry to the current directory: directory updated
+
+
+            //    }
+            //    catch (Exception ex)
+            //    {
+
+            //        Console.WriteLine($"Error importing file: {ex.Message}"); // Informative error message
+            //    }
+            //} 
+            #endregion
+            else if (commandArray_2Agr[0].ToLower() == "import")
+            {
+                string name = commandArray_2Agr[1];
+                if (System.IO.File.Exists(name))
+                {
+                    Directory_Entry o = Program.currentDirectory.Get_Directory_Entry();
+
+                    string[] pathParts = name.Split('\\'); // Split the path(extract name & size)
+                    string fileName = pathParts[pathParts.Length - 1];
+                    string fileContent = System.IO.File.ReadAllText(name);
+                    int size = fileContent.Length;
+                    int index = Program.currentDirectory.search_Directory(fileName);
+                    int fc = 0;
+
+                    if (index == -1)
+                    {
+                        File_Entry f = new File_Entry(fileName.ToCharArray(), 0x0, fc, Program.currentDirectory, fileContent);
+                        f.Write_File_Content();
+                        Directory_Entry d = new Directory_Entry(fileName, 0, f.dir_First_Cluster);
+                        Program.currentDirectory.DirectoryTable.Add(d);
+                        Program.currentDirectory.Write_Directory();
+
+                        if (Program.currentDirectory.Parent != null)
+                        {
+                            Program.currentDirectory.Parent.Update_Content(o, Program.currentDirectory.Get_Directory_Entry());
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine("Error: File with the same name already exists.");
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("Error: The specified name is not a file.");
+                }
+            }
+            
 
             else if (
                 commandArray_2Agr[0].ToLower() == "help" && commandArray_2Agr[1].ToLower() != "cd" && commandArray_2Agr[1].ToLower() != "cls" && commandArray_2Agr[1].ToLower() != "quit" && commandArray_2Agr[1].ToLower() != "copy" && commandArray_2Agr[1].ToLower() != "del"

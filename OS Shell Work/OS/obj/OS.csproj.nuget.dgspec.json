@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\3th sem\\OS Shell\\OS\\OS.csproj": {}
+    "D:\\OS Shell Work\\OS\\OS.csproj": {}
   },
   "projects": {
-    "D:\\3th sem\\OS Shell\\OS\\OS.csproj": {
+    "D:\\OS Shell Work\\OS\\OS.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\3th sem\\OS Shell\\OS\\OS.csproj",
+        "projectUniqueName": "D:\\OS Shell Work\\OS\\OS.csproj",
         "projectName": "OS",
-        "projectPath": "D:\\3th sem\\OS Shell\\OS\\OS.csproj",
+        "projectPath": "D:\\OS Shell Work\\OS\\OS.csproj",
         "packagesPath": "C:\\Users\\User\\.nuget\\packages\\",
-        "outputPath": "D:\\3th sem\\OS Shell\\OS\\obj\\",
+        "outputPath": "D:\\OS Shell Work\\OS\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\User\\AppData\\Roaming\\NuGet\\NuGet.Config",

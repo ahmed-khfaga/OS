@@ -14,6 +14,41 @@ namespace OS
         public int dir_First_Cluster;
         public int dir_FileSize;
 
+        public Directory_Entry(string name, byte dirAttr, int dirFirstCluster) : this()
+        {
+            dir_Attr = dirAttr;
+            dir_First_Cluster = dirFirstCluster;
+            if (dirAttr == 0x10)  //directory
+
+                assign_DirName(name); //no extenstion
+
+            else                    //file
+
+                AssignFileName(name);  //need extenstion for files
+
+        }
+        //public Directory_Entry(char[] nameArr, byte dirAttr, int dirFirstCluster, int fileSize) : this()
+        //{
+        //    Array.Copy(nameArr, Dir_Namee, Math.Min(11, nameArr.Length)); // Use Math.Min for safety
+        //    dir_Attr = dirAttr;
+        //    dir_First_Cluster = dirFirstCluster;
+        //    dir_FileSize = fileSize;
+
+
+        //    // Optional: Provide feedback to the user if truncation occurs (as with AssignName).
+        //    if (nameArr.Length > 11)
+        //    {
+        //        Console.WriteLine($"Warning: Name truncated to 11 characters.");
+        //    }
+        //}
+        public Directory_Entry()
+        {
+            dir_Attr = 0;
+            dir_First_Cluster = 0;
+            dir_FileSize = 0;
+            Array.Clear(Dir_Namee, 0, Dir_Namee.Length);
+            Array.Clear(Dir_Empty, 0, Dir_Empty.Length);
+        }
         public Directory_Entry(char[] Dir_Name, byte dir_Attribute, int f_Cluster)
         {
 
@@ -27,28 +62,41 @@ namespace OS
 
         }
 
-        public void assign_File_Name(string Name, string extension)
+        public void AssignFileName(string fullName) 
         {
-            
-            string cleaned_Name = clean_The_Name(Name);
-            if (cleaned_Name.Length > 7)
+            if (fullName.Contains('.')) // It's a file
             {
-                cleaned_Name = cleaned_Name.Substring(0, 7);
-            }
+                string[] parts = fullName.Split('.');
+                string name = parts[0];
+                string extension = parts[1];
 
-            string cleaned_Extension = clean_The_Name(extension);
-            if (cleaned_Extension.Length > 3)
+                if (name.Length > 7)
+                {
+                    name = name.Substring(0, 7);
+                }
+
+                if (extension.Length > 3)
+                {
+                    extension = extension.Substring(0, 3);
+                }
+
+                string finalName = name + "." + extension;
+                Array.Copy(finalName.PadRight(11, '\0').ToCharArray(), Dir_Namee, 11);
+
+
+                dir_Attr = 0x00;  // File attribute
+            }
+            else  // It's a directory
             {
-                cleaned_Extension = cleaned_Extension.Substring(0, 3);
+                if (fullName.Length > 11)
+                    fullName = fullName.Substring(0, 11); // Truncate
+
+                Array.Copy(fullName.PadRight(11, '\0').ToCharArray(), Dir_Namee, 11);
+
+
+                dir_Attr = 0x10; // Directory attribute
             }
-            string full_Name = $"{cleaned_Name.PadRight(7)}.{cleaned_Extension}";
-            Array.Clear(Dir_Namee, 0, Dir_Namee.Length); 
-
-
-            // Ensure the full name is exactly 11 characters long
-            Array.Copy(full_Name.ToCharArray(), Dir_Namee, full_Name.Length);
         }
-
         private string clean_The_Name(string name)
         {
            // string cleaned = name.Trim();
