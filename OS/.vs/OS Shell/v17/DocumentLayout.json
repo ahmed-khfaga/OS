@@ -1,0 +1,157 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "D:\\ToMyFirendoo\\OS Shell Work\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{16611D8E-C101-4658-BEB4-4E0C9BCACACD}|OS\\OS.csproj|d:\\tomyfirendoo\\os shell work\\os\\command_line.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{16611D8E-C101-4658-BEB4-4E0C9BCACACD}|OS\\OS.csproj|solutionrelative:os\\command_line.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{16611D8E-C101-4658-BEB4-4E0C9BCACACD}|OS\\OS.csproj|D:\\ToMyFirendoo\\OS Shell Work\\os\\directory_entry.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{16611D8E-C101-4658-BEB4-4E0C9BCACACD}|OS\\OS.csproj|solutionrelative:os\\directory_entry.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{16611D8E-C101-4658-BEB4-4E0C9BCACACD}|OS\\OS.csproj|D:\\ToMyFirendoo\\OS Shell Work\\os\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{16611D8E-C101-4658-BEB4-4E0C9BCACACD}|OS\\OS.csproj|solutionrelative:os\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{16611D8E-C101-4658-BEB4-4E0C9BCACACD}|OS\\OS.csproj|D:\\ToMyFirendoo\\OS Shell Work\\os\\mini_fat.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{16611D8E-C101-4658-BEB4-4E0C9BCACACD}|OS\\OS.csproj|solutionrelative:os\\mini_fat.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{16611D8E-C101-4658-BEB4-4E0C9BCACACD}|OS\\OS.csproj|D:\\ToMyFirendoo\\OS Shell Work\\os\\file_entry.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{16611D8E-C101-4658-BEB4-4E0C9BCACACD}|OS\\OS.csproj|solutionrelative:os\\file_entry.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{16611D8E-C101-4658-BEB4-4E0C9BCACACD}|OS\\OS.csproj|D:\\ToMyFirendoo\\OS Shell Work\\os\\directory.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{16611D8E-C101-4658-BEB4-4E0C9BCACACD}|OS\\OS.csproj|solutionrelative:os\\directory.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{16611D8E-C101-4658-BEB4-4E0C9BCACACD}|OS\\OS.csproj|D:\\ToMyFirendoo\\OS Shell Work\\os\\virtual_disk.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{16611D8E-C101-4658-BEB4-4E0C9BCACACD}|OS\\OS.csproj|solutionrelative:os\\virtual_disk.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{16611D8E-C101-4658-BEB4-4E0C9BCACACD}|OS\\OS.csproj|D:\\ToMyFirendoo\\OS Shell Work\\os\\converter.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{16611D8E-C101-4658-BEB4-4E0C9BCACACD}|OS\\OS.csproj|solutionrelative:os\\converter.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 2,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "Mini_FAT.cs",
+              "DocumentMoniker": "D:\\ToMyFirendoo\\OS Shell Work\\OS\\Mini_FAT.cs",
+              "RelativeDocumentMoniker": "OS\\Mini_FAT.cs",
+              "ToolTip": "D:\\ToMyFirendoo\\OS Shell Work\\OS\\Mini_FAT.cs",
+              "RelativeToolTip": "OS\\Mini_FAT.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAJEAAABGAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-12-06T09:12:52.308Z",
+              "IsPinned": true,
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "Virtual_Disk.cs",
+              "DocumentMoniker": "D:\\ToMyFirendoo\\OS Shell Work\\OS\\Virtual_Disk.cs",
+              "RelativeDocumentMoniker": "OS\\Virtual_Disk.cs",
+              "ToolTip": "D:\\ToMyFirendoo\\OS Shell Work\\OS\\Virtual_Disk.cs",
+              "RelativeToolTip": "OS\\Virtual_Disk.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAABAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-12-06T09:12:32.577Z",
+              "IsPinned": true,
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Command_Line.cs",
+              "DocumentMoniker": "D:\\ToMyFirendoo\\OS Shell Work\\OS\\Command_Line.cs",
+              "RelativeDocumentMoniker": "OS\\Command_Line.cs",
+              "ToolTip": "D:\\ToMyFirendoo\\OS Shell Work\\OS\\Command_Line.cs",
+              "RelativeToolTip": "OS\\Command_Line.cs",
+              "ViewState": "AQIAACsBAAAAAAAAAAAAAEYBAAAZAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-12-06T09:16:26.63Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Directory_Entry.cs",
+              "DocumentMoniker": "D:\\ToMyFirendoo\\OS Shell Work\\OS\\Directory_Entry.cs",
+              "RelativeDocumentMoniker": "OS\\Directory_Entry.cs",
+              "ToolTip": "D:\\ToMyFirendoo\\OS Shell Work\\OS\\Directory_Entry.cs",
+              "RelativeToolTip": "OS\\Directory_Entry.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAABwAAAAJAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-12-06T09:13:42.185Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Program.cs",
+              "DocumentMoniker": "D:\\ToMyFirendoo\\OS Shell Work\\OS\\Program.cs",
+              "RelativeDocumentMoniker": "OS\\Program.cs",
+              "ToolTip": "D:\\ToMyFirendoo\\OS Shell Work\\OS\\Program.cs",
+              "RelativeToolTip": "OS\\Program.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAABUAAABFAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-12-06T20:30:57.347Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "Directory.cs",
+              "DocumentMoniker": "D:\\ToMyFirendoo\\OS Shell Work\\OS\\Directory.cs",
+              "RelativeDocumentMoniker": "OS\\Directory.cs",
+              "ToolTip": "D:\\ToMyFirendoo\\OS Shell Work\\OS\\Directory.cs",
+              "RelativeToolTip": "OS\\Directory.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAABAAAABEAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-12-11T21:54:48.862Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "File_Entry.cs",
+              "DocumentMoniker": "D:\\ToMyFirendoo\\OS Shell Work\\OS\\File_Entry.cs",
+              "RelativeDocumentMoniker": "OS\\File_Entry.cs",
+              "ToolTip": "D:\\ToMyFirendoo\\OS Shell Work\\OS\\File_Entry.cs",
+              "RelativeToolTip": "OS\\File_Entry.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAA4AAABNAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-12-06T09:14:54.758Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "Converter.cs",
+              "DocumentMoniker": "D:\\ToMyFirendoo\\OS Shell Work\\OS\\Converter.cs",
+              "RelativeDocumentMoniker": "OS\\Converter.cs",
+              "ToolTip": "D:\\ToMyFirendoo\\OS Shell Work\\OS\\Converter.cs",
+              "RelativeToolTip": "OS\\Converter.cs",
+              "ViewState": "AQIAABsAAAAAAAAAAAAUwCUAAAAIAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-12-12T16:28:11.274Z"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
