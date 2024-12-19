@@ -7,6 +7,10 @@
       "RelativeMoniker": "D:0:0:{16611D8E-C101-4658-BEB4-4E0C9BCACACD}|OS\\OS.csproj|solutionrelative:os\\command_line.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
+      "AbsoluteMoniker": "D:0:0:{16611D8E-C101-4658-BEB4-4E0C9BCACACD}|OS\\OS.csproj|D:\\OS\\os\\file_entry.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{16611D8E-C101-4658-BEB4-4E0C9BCACACD}|OS\\OS.csproj|solutionrelative:os\\file_entry.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{16611D8E-C101-4658-BEB4-4E0C9BCACACD}|OS\\OS.csproj|D:\\OS\\os\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{16611D8E-C101-4658-BEB4-4E0C9BCACACD}|OS\\OS.csproj|solutionrelative:os\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -29,10 +33,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{16611D8E-C101-4658-BEB4-4E0C9BCACACD}|OS\\OS.csproj|D:\\OS\\os\\converter.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{16611D8E-C101-4658-BEB4-4E0C9BCACACD}|OS\\OS.csproj|solutionrelative:os\\converter.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{16611D8E-C101-4658-BEB4-4E0C9BCACACD}|OS\\OS.csproj|D:\\OS\\os\\file_entry.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{16611D8E-C101-4658-BEB4-4E0C9BCACACD}|OS\\OS.csproj|solutionrelative:os\\file_entry.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -46,7 +46,7 @@
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 6,
               "Title": "Mini_FAT.cs",
               "DocumentMoniker": "D:\\OS\\OS\\Mini_FAT.cs",
               "RelativeDocumentMoniker": "OS\\Mini_FAT.cs",
@@ -55,12 +55,11 @@
               "ViewState": "AQIAAJwAAAAAAAAAAAAUwKkAAAAMAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-12-06T09:12:52.308Z",
-              "IsPinned": true,
-              "EditorCaption": ""
+              "IsPinned": true
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 5,
               "Title": "Virtual_Disk.cs",
               "DocumentMoniker": "D:\\OS\\OS\\Virtual_Disk.cs",
               "RelativeDocumentMoniker": "OS\\Virtual_Disk.cs",
@@ -69,12 +68,11 @@
               "ViewState": "AQIAACUAAAAAAAAAAAAUwDQAAAAQAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-12-06T09:12:32.577Z",
-              "IsPinned": true,
-              "EditorCaption": ""
+              "IsPinned": true
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 3,
               "Title": "Directory.cs",
               "DocumentMoniker": "D:\\OS\\OS\\Directory.cs",
               "RelativeDocumentMoniker": "OS\\Directory.cs",
@@ -82,8 +80,7 @@
               "RelativeToolTip": "OS\\Directory.cs",
               "ViewState": "AQIAAFgAAAAAAAAAAAAIwGMAAAAIAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-12-11T21:54:48.862Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-12-11T21:54:48.862Z"
             },
             {
               "$type": "Document",
@@ -93,14 +90,14 @@
               "RelativeDocumentMoniker": "OS\\Command_Line.cs",
               "ToolTip": "D:\\OS\\OS\\Command_Line.cs",
               "RelativeToolTip": "OS\\Command_Line.cs",
-              "ViewState": "AQIAAE8BAAAAAAAAAAAmwJsBAAAZAAAA",
+              "ViewState": "AQIAAPUAAAAAAAAAAAAYwP4AAAApAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-12-06T09:16:26.63Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 2,
               "Title": "Program.cs",
               "DocumentMoniker": "D:\\OS\\OS\\Program.cs",
               "RelativeDocumentMoniker": "OS\\Program.cs",
@@ -113,7 +110,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 7,
               "Title": "Converter.cs",
               "DocumentMoniker": "D:\\OS\\OS\\Converter.cs",
               "RelativeDocumentMoniker": "OS\\Converter.cs",
@@ -121,12 +118,11 @@
               "RelativeToolTip": "OS\\Converter.cs",
               "ViewState": "AQIAAHwAAAAAAAAAAAAIwIsAAAAUAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-12-12T16:28:11.274Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-12-12T16:28:11.274Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 4,
               "Title": "Directory_Entry.cs",
               "DocumentMoniker": "D:\\OS\\OS\\Directory_Entry.cs",
               "RelativeDocumentMoniker": "OS\\Directory_Entry.cs",
@@ -134,20 +130,20 @@
               "RelativeToolTip": "OS\\Directory_Entry.cs",
               "ViewState": "AQIAACgAAAAAAAAAAAAIwDQAAAAIAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-12-06T09:13:42.185Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-12-06T09:13:42.185Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 1,
               "Title": "File_Entry.cs",
               "DocumentMoniker": "D:\\OS\\OS\\File_Entry.cs",
               "RelativeDocumentMoniker": "OS\\File_Entry.cs",
               "ToolTip": "D:\\OS\\OS\\File_Entry.cs",
               "RelativeToolTip": "OS\\File_Entry.cs",
-              "ViewState": "AQIAAE4AAAAAAAAAAAAuwK8AAAAeAAAA",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAK8AAAAeAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-12-06T09:14:54.758Z"
+              "WhenOpened": "2024-12-06T09:14:54.758Z",
+              "EditorCaption": ""
             }
           ]
         }

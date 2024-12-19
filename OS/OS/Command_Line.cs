@@ -14,61 +14,59 @@ namespace OS
         public string[] comm_Arg;
 
 
-        public static Directory MoveToDir(string fullPath)
+        public static Directory? MoveToDir(string fullPath)
         {
-            // Split the path by backslashes to get individual directory names
-            string[] pathParts = fullPath.Split('\\');
+            // Split the path into its parts
+            string[] pathParts = fullPath.Split("\\");
 
-            // The first part should be the root directory (e.g., "H:" or "K:")
-            string rootDirName = pathParts[0].Trim();
-
-            // Ensure the root directory matches the root of the virtual disk (e.g., "H:", "K:", etc.)
-            if (rootDirName != new string(Program.currentDirectory.Dir_Namee)) 
+            // First, check if the root directory matches
+            string rootName = new string(Mini_FAT.Root.Dir_Namee).PadRight(11, '\0');
+            if (rootName.Contains("\0"))
             {
-                Console.WriteLine($"Error: Root directory {rootDirName} does not match the current virtual disk root.");
-                return null; // Invalid root directory
+                rootName = rootName.Replace('\0', ' ');
             }
 
-            // Create the root directory object based on the root directory name
-            Directory currentDir = new Directory(rootDirName.ToCharArray(), 0x10, 0, 0, Program.currentDirectory);
-            currentDir.Read_Directory(); // Load the root directory entries
+            if (pathParts[0].Trim() != rootName.Trim())
+            {
+                Console.WriteLine($"Error: The root in the specified path \"{fullPath}\" does not exist.");
+                return null;
+            }
 
-            // Iterate over the remaining path parts (directories)
+            // Start from the root directory
+            Directory currentDir = Mini_FAT.Root;
+            currentDir.Read_Directory();
+
             for (int i = 1; i < pathParts.Length; i++)
             {
                 string dirName = pathParts[i].Trim();
-
-                // Search for the directory entry within the current directory
                 int index = currentDir.search_Directory(dirName);
+
                 if (index == -1)
                 {
-                    // Directory not found in the current directory
-                    Console.WriteLine($"Error: Directory '{dirName}' not found.");
+                    Console.WriteLine($"Error: The path \"{fullPath}\" does not exist.");
                     return null;
                 }
 
-                // Get the directory entry and instantiate the corresponding Directory object
                 Directory_Entry entry = currentDir.DirectoryTable[index];
-                if (entry.dir_Attr != 0x10)
+                if (entry.dir_Attr != 0x10) 
                 {
-                    // The entry is not a directory
-                    Console.WriteLine($"Error: '{dirName}' is not a directory.");
+                    Console.WriteLine($"Error: The path \"{fullPath}\" is not a directory.");
                     return null;
                 }
 
-                // Create a new Directory object for the next level
                 int firstCluster = entry.dir_First_Cluster;
                 Directory nextDir = new Directory(dirName.ToCharArray(), 0x10, firstCluster, 0, currentDir);
-                nextDir.Read_Directory(); // Read the directory entries for the next directory
+                nextDir.Read_Directory();
 
-                currentDir = nextDir; // Move to the next directory in the path
+                // Move to the next directory
+                currentDir = nextDir;
             }
 
-            // Return the final directory object after traversing all parts of the path
+            Program.currentDirectory = currentDir;
+            Program.path = fullPath;
+
             return currentDir;
         }
-
-
         public Command_Line(string command)
         {
             comm_Arg = command.Split(" ");
@@ -140,7 +138,7 @@ namespace OS
                         file_Sizes += Program.currentDirectory.DirectoryTable[i].dir_FileSize;
                         string m = string.Empty;
                         m += new string(Program.currentDirectory.DirectoryTable[i].Dir_Namee);
-                        Console.WriteLine("\t\t<File> " + m);
+                        Console.WriteLine("\t\t<File>\t\t" + m);
                         Console.WriteLine();
                     }
                     else if (Program.currentDirectory.DirectoryTable[i].dir_Attr == 0x10) // لو في فولدر 
@@ -244,6 +242,55 @@ namespace OS
             {
                 Console.WriteLine("Error : quit command syntax is \n quit \n function: Quit the shell");
             }
+
+            // dir fullpath
+
+            else if (commandArray_2Agr[0].ToLower() == "dir")
+            {
+                
+                string dname = commandArray_2Agr[1];
+                if(dname.Contains("\\"))
+                {
+                    MoveToDir(dname);
+                    int file_Counter = 0;
+                    int folder_Counter = 0;
+                    int file_Sizes = 0;
+
+                    string name = new string(Program.currentDirectory.Dir_Namee);
+                    Console.WriteLine($"Directory of {name} : \n");
+                    for (int i = 0; i < Program.currentDirectory.DirectoryTable.Count; i++)
+                    {
+                        if (Program.currentDirectory.DirectoryTable[i].dir_Attr == 0x0)
+                        {
+                            file_Counter++;
+                            file_Sizes += Program.currentDirectory.DirectoryTable[i].dir_FileSize;
+                            string m = string.Empty;
+                            m += new string(Program.currentDirectory.DirectoryTable[i].Dir_Namee);
+                            Console.WriteLine("\t\t<File>\t\t" + m);
+                            Console.WriteLine();
+                        }
+                        else if (Program.currentDirectory.DirectoryTable[i].dir_Attr == 0x10) // لو في فولدر 
+                        {
+                            folder_Counter++;
+                            string S = new string(Program.currentDirectory.DirectoryTable[i].Dir_Namee);
+                            Console.WriteLine("\t\t<DIR>\t\t" + S);
+                        }
+
+                    }
+                    Console.Write($"\t\t\t{file_Counter} File(s)\t ");
+                    if (file_Counter > 0)
+                    {
+                        Console.Write(file_Sizes);
+                        Console.WriteLine();
+                    }
+                    else
+                    {
+                        Console.WriteLine();
+                    }
+                    Console.WriteLine($"\t\t\t{folder_Counter} Dir(s)\t {Mini_FAT.get_Free_Size()} bytes free");
+
+                }
+            }
             
             // work
             else if (commandArray_2Agr[0].ToLower() == "md")
@@ -342,61 +389,10 @@ namespace OS
                 // if cd N:\f 
                 if(dname.Contains("\\"))
                 {
-                    string[] path_Parts = dname.Split("\\");
-                    // first check root directory 
-                    string nameRoot = new string(Mini_FAT.Root.Dir_Namee).PadRight(11, '\0');
-                    if(nameRoot.Contains("\0"))
-                    {
 
-                        nameRoot = nameRoot.Replace('\0', ' ');
-                        
-                    }    
-                    if (path_Parts[0] != nameRoot.Trim())
-                    {
-                        Console.WriteLine($"Error : this Root in this path \"{dname}\" is not exist");
-                        return;
-                    }
-                    else
-                    {
-                        // we need readDirectory and search
-                        string nameDD = path_Parts[0].Trim();
-                        Directory gg = Mini_FAT.Root;
-                        gg.Read_Directory();
-                        for(int i = 1; i < path_Parts.Length; i++)
-                        {
-                            string N_name = path_Parts[i].Trim();
-                            int index =gg.search_Directory(path_Parts[i]);
-                            if (index == -1)
-                            {
-                                Console.WriteLine($"Error : this path '{dname}' is not Exsits. ");
-                                return;
-                            }
-                            else
-                            {
-                                Directory_Entry e = gg.DirectoryTable[index];
-                                Directory dd;
-                                if (e.dir_Attr != 0x10) // check if Dir or file
-                                {
-                                    Console.WriteLine($"Error : this path '{dname}' is not to Directory ");
-                                    return;
-                                }
-                                else
-                                {
-                                    int fc = e.dir_First_Cluster;
-                                     dd = new Directory(N_name.ToCharArray(), 0x10, fc, 0, gg);
-                                    dd.Read_Directory();
-                                    e = dd;
-                                }
-                                Program.currentDirectory = dd;
-                                Program.path = Path.Combine(Program.path, dname);
+                    MoveToDir(dname);
 
-                            }
-
-                        }
-                        // need to update old path to new path 
-
-
-                    }
+                    
                 }
                 if (dname == "..")
                 {
@@ -426,10 +422,7 @@ namespace OS
                 }
 
 
-            }
-            
-
-               
+            }                       
             #endregion
         
             // work
