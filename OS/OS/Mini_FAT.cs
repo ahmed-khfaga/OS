@@ -143,13 +143,13 @@ namespace OS
                 Initialization();
 
                 write_FAT();
-                Root = new Directory("N:".PadRight(11,'\0'), 0x10, 5, null);
+                Root = new Directory(("N:".PadRight(11,'\0')).ToCharArray(), 0x10, 5, 0, null);
                 Root.Write_Directory();
             }
             else
             {
                 readFAT();
-                Root = new Directory("N:".PadRight(11, '\0'), 0x10, 5, null);
+                Root = new Directory(("N:".PadRight(11, '\0')).ToCharArray(), 0x10, 5, 0, null);
                 Root.Read_Directory();
 
             }

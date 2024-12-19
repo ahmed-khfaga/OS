@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Linq;
-using System.Reflection.PortableExecutable;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -14,7 +12,7 @@ namespace OS
         public List<Directory_Entry> DirectoryTable;
         public int cluster_Index;
 
-        public Directory(string name, byte attr, int first_Cluster , Directory Parent) : base(name.ToCharArray(), attr, first_Cluster)
+        public Directory(char []name, byte attr, int first_Cluster, int file_size, Directory Parent) : base(name, attr, file_size, first_Cluster)
         {
             DirectoryTable = new List<Directory_Entry>();
 
@@ -23,9 +21,10 @@ namespace OS
                 this.Parent = Parent;
             }
         }
+
         public Directory_Entry Get_Directory_Entry()
         {
-            Directory_Entry me = new Directory_Entry(this.Dir_Namee, this.dir_Attr, this.dir_First_Cluster);
+            Directory_Entry me = new Directory_Entry(this.Dir_Namee, this.dir_Attr, this.dir_FileSize, this.dir_First_Cluster);
             for (int i = 0; i < 12; i++)
             {
                 me.Dir_Empty[i] = this.Dir_Empty[i];
@@ -57,10 +56,10 @@ namespace OS
             bool can = false;
             int needed_Size = (DirectoryTable.Count + 1) * 32;
             int needed_Cluster = needed_Size / 1024;
-            int rem = needed_Size % 1024; 
-            if (rem > 0) 
+            int rem = needed_Size % 1024;
+            if (rem > 0)
             {
-                needed_Cluster++; 
+                needed_Cluster++;
             }
             needed_Cluster += d.dir_FileSize / 1024;
             int rem1 = d.dir_FileSize % 1024;
@@ -74,6 +73,7 @@ namespace OS
             }
             return can;
         }
+
         public void Empty_My_Clusters()
         {
             if (this.dir_First_Cluster == 0)
@@ -100,9 +100,9 @@ namespace OS
         {
             DirectoryTable = new List<Directory_Entry>();
 
-            if (dir_First_Cluster != 0 )
+            if (dir_First_Cluster != 0)
             {
-                
+
                 cluster_Index = dir_First_Cluster;
                 int next = Mini_FAT.getNext(cluster_Index);
                 List<byte> ls = new List<byte>();
@@ -121,7 +121,7 @@ namespace OS
                 DirectoryTable = Converter.BytesToDirectory_Entries(ls);
             }
 
-           
+
         }
         public void Write_Directory()
         {
@@ -133,17 +133,17 @@ namespace OS
 
             if (this.dir_First_Cluster != 0)
             {
-                Empty_My_Clusters();  
-                cluster_Index = Mini_FAT.get_Availabel_Cluster();  
-                this.dir_First_Cluster = cluster_Index;  
+                Empty_My_Clusters();
+                cluster_Index = Mini_FAT.get_Availabel_Cluster();
+                this.dir_First_Cluster = cluster_Index;
             }
             else
             {
-                cluster_Index = Mini_FAT.get_Availabel_Cluster(); 
-                this.dir_First_Cluster = cluster_Index;  
+                cluster_Index = Mini_FAT.get_Availabel_Cluster();
+                this.dir_First_Cluster = cluster_Index;
             }
 
-            int last_Cluster = -1;  
+            int last_Cluster = -1;
 
             for (int i = 0; i < bytes.Count; i++)
             {
@@ -169,7 +169,7 @@ namespace OS
                 if (Parent != null)
                 {
                     Empty_My_Clusters();
-                    dir_First_Cluster = 0; 
+                    dir_First_Cluster = 0;
                 }
             }
 
@@ -196,7 +196,7 @@ namespace OS
             }
         }
 
-        
+
         public int search_Directory(string name)
         {
             // If DirectoryTable is out of date, then read it.
@@ -221,15 +221,15 @@ namespace OS
         {
             DirectoryTable.Add(d);
             Write_Directory();
-          
+
         }
         public void remove_Entry(Directory_Entry d)
         {
-            
-            if(DirectoryTable.Count() != 0)
+
+            if (DirectoryTable.Count() != 0)
             {
                 string o = new string(d.Dir_Namee);
-                DirectoryTable.Remove(d);               
+                DirectoryTable.Remove(d);
             }
             else
             {
@@ -251,6 +251,35 @@ namespace OS
                 this.dir_First_Cluster = 0;
 
             Mini_FAT.write_FAT();
+        }
+
+        public void CreateSubdirectory(string name)
+        {
+            // Check if a subdirectory with the same name already exists
+            if (search_Directory(name) != -1)
+            {
+                throw new Exception($"A subdirectory or file with the name '{name}' already exists.");
+            }
+
+            // Allocate a cluster for the new subdirectory
+            int newCluster = Mini_FAT.get_Availabel_Cluster();
+            if (newCluster == -1)
+            {
+                throw new Exception("No available clusters to create a new subdirectory.");
+            }
+
+            // Create a new subdirectory object
+            Directory subdirectory = new Directory(name.ToCharArray(), 0x10, newCluster, 0, this);
+
+            // Add the special "." and ".." entries
+            subdirectory.DirectoryTable.Add(subdirectory.Get_Directory_Entry()); // Self-reference "."
+            subdirectory.DirectoryTable.Add(this.Get_Directory_Entry());        // Parent reference ".."
+
+            // Write the new subdirectory to disk
+            subdirectory.Write_Directory();
+
+            // Add the subdirectory entry to the current directory's table
+            add_Entry(subdirectory.Get_Directory_Entry());
         }
     }
 }

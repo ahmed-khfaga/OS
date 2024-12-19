@@ -120,7 +120,7 @@ namespace OS
             int fileSize = BitConverter.ToInt32(bytes.ToArray(), 28);
 
             // إنشاء الكائن
-            return new Directory_Entry(formattedFileName.ToCharArray(), fileAttribute, firstCluster)
+            return new Directory_Entry(formattedFileName.ToCharArray(), fileAttribute, firstCluster,fileSize)
             {
                 Dir_Empty = reservedBytes,
                 dir_FileSize = fileSize

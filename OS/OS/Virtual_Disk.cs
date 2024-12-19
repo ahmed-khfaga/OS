@@ -18,31 +18,7 @@ namespace OS
         public static void create_Or_Open_Disk(string path)
         {
 
-            #region s
-            //try
-            //{
-            //    // here we Open File 
-            //    disk = new FileStream(path, FileMode.Open, FileAccess.ReadWrite);
-
-
-            //    // check if File can't Read or Can't Write g Exeption and create New File 
-            //    if (!disk.CanRead || !disk.CanWrite)
-            //    {
-            //        throw new IOException("Failed to open disk for reading and writing.");
-            //    }
-
-            //}
-            //catch (FileNotFoundException) // here we catch Exeption and Create New File 
-            //{
-            //    disk = new FileStream(path, FileMode.Create, FileAccess.ReadWrite);
-
-
-            //    disk.Close();
-
-            //    // After Make File We Open it 
-            //    disk = new FileStream(path, FileMode.Open, FileAccess.ReadWrite);
-            //} 
-            #endregion
+         
 
             if(!File.Exists(path))
             {
@@ -57,7 +33,6 @@ namespace OS
 
                 disk = new FileStream(path, FileMode.Open, FileAccess.ReadWrite);
 
-                //close_Disk();
             }
 
         }
@@ -69,7 +44,6 @@ namespace OS
             disk.Seek(clusterIndex * clusterSize, SeekOrigin.Begin);
             disk.Write(clusterdata, 0, clusterdata.Length);
             disk.Flush();
-            //close_Disk();
 
         }
         public static byte[] read_Cluster(int clusterIndex)

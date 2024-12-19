@@ -49,13 +49,14 @@ namespace OS
             Array.Clear(Dir_Namee, 0, Dir_Namee.Length);
             Array.Clear(Dir_Empty, 0, Dir_Empty.Length);
         }
-        public Directory_Entry(char[] Dir_Name, byte dir_Attribute, int f_Cluster)
+        public Directory_Entry(char[] Dir_Name, byte dir_Attribute,int file_size ,int f_Cluster)
         {
-
-            
             string DIR_NAME = new string(Dir_Name);
-            assign_DirName(DIR_NAME);         
+
+            assign_DirName(DIR_NAME);
+
             this.dir_Attr = dir_Attribute;
+            this.dir_FileSize = file_size;
             this.dir_First_Cluster = f_Cluster;
            
             Array.Clear(Dir_Empty, 0, Dir_Empty.Length);
@@ -84,7 +85,7 @@ namespace OS
                 Array.Copy(finalName.PadRight(11, '\0').ToCharArray(), Dir_Namee, 11);
 
 
-                dir_Attr = 0x00;  // File attribute
+                dir_Attr = 0x0;  // File attribute
             }
             else  // It's a directory
             {
@@ -97,26 +98,26 @@ namespace OS
                 dir_Attr = 0x10; // Directory attribute
             }
         }
-        private string clean_The_Name(string name)
-        {
-           // string cleaned = name.Trim();
-            char[] prohibitedChars = new char[]
-            {
-                '!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '-', '=', '+', '[', ']', '{', '}',
-                ';', ':', ',', '.', '<', '>', '/', '?', '\\', '|', '~', '`'
-            };
-            string cleaned = new string(name.Where(c => !prohibitedChars.Contains(c)).ToArray());
+        //private string clean_The_Name(string name)
+        //{
+        //   // string cleaned = name.Trim();
+        //    char[] prohibitedChars = new char[]
+        //    {
+        //        '!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '-', '=', '+', '[', ']', '{', '}',
+        //        ';', ':', ',', '.', '<', '>', '/', '?', '\\', '|', '~', '`'
+        //    };
+        //    string cleaned = new string(name.Where(c => !prohibitedChars.Contains(c)).ToArray());
 
-            if(cleaned.Length < 11 ) 
-            {
-                for (int i = cleaned.Length; i < 11; i++)
-                    cleaned += " ";
-            }
-            return cleaned;
-        }
+        //    if(cleaned.Length < 11 ) 
+        //    {
+        //        for (int i = cleaned.Length; i < 11; i++)
+        //            cleaned += " ";
+        //    }
+        //    return cleaned;
+        //}
         public void assign_DirName(string name)
         {
-            string cleaned_Name = clean_The_Name(name);
+            string cleaned_Name = name;
 
            
             if (cleaned_Name.Length > 11)
@@ -125,10 +126,13 @@ namespace OS
             }
             if(cleaned_Name.Length < 11 ) 
             {
-                cleaned_Name += " ";
+                for (int i= cleaned_Name.Length; i < 11; i++) 
+                {
+                    cleaned_Name += " ";
+                }
             }
 
-            
+
             Array.Clear(Dir_Namee, 0, Dir_Namee.Length); // Clear the array
             Array.Copy(cleaned_Name.ToCharArray(), Dir_Namee, cleaned_Name.Length);
         }

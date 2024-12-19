@@ -5,7 +5,6 @@ namespace OS
 {
     class Program
     {
-        public static Directory? Root;
         public static Directory currentDirectory;
         public static string path = "disk";
 

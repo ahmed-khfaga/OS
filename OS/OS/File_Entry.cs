@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,7 +13,7 @@ namespace OS
         public  Directory? parent;
         ///public int Cluster_Index;
 
-        public File_Entry(char[] name, byte dir_attr, int dir_First_Cluster , Directory pa,string Content) : base(name, dir_attr, dir_First_Cluster)
+        public File_Entry(char[] name, byte dir_attr, int dir_First_Cluster, int fz, Directory pa,string Content) : base(name, dir_attr,fz ,dir_First_Cluster)
         {
             this.content = Content;
             if (parent != null)
@@ -20,7 +21,7 @@ namespace OS
                 this.parent = pa;
             }
         }
-        public File_Entry(Directory_Entry d, Directory pa) : base(d.Dir_Namee, d.dir_Attr, d.dir_First_Cluster)
+        public File_Entry(Directory_Entry d, Directory pa) : base(d.Dir_Namee, d.dir_Attr,d.dir_FileSize ,d.dir_First_Cluster)
         {
             for (int i = 0; i < 12; i++)
             {
@@ -68,7 +69,7 @@ namespace OS
         }
         public Directory_Entry GetDirectory_Entry()
         {
-            Directory_Entry m = new Directory_Entry(Dir_Namee, dir_Attr, dir_First_Cluster);
+            Directory_Entry m = new Directory_Entry(Dir_Namee, dir_Attr, dir_First_Cluster, dir_FileSize);
             for (int i = 0; i < 12; i++)
             {
                 m.Dir_Empty[i] = Dir_Empty[i];
@@ -155,14 +156,25 @@ namespace OS
             }
         }
 
-        public void Delete_File()
+        public void Delete_File(string fileName)
         {
             Empty_My_Clusters();
-           // parent?.remove_Entry(GetDirectory_Entry());
-             
-            if(parent != null) 
+            // parent?.remove_Entry(GetDirectory_Entry());
+
+            //if(parent != null) 
+            //{
+            //    parent.remove_Entry(GetDirectory_Entry());
+            //}
+            //Mini_FAT.write_FAT();
+            if (parent != null)
             {
-                parent.remove_Entry(GetDirectory_Entry());
+                parent.Read_Directory();
+                int indexParent = parent.search_Directory(fileName);
+                if (indexParent != -1)
+                {
+                    parent.DirectoryTable.RemoveAt(indexParent);
+                    parent.Write_Directory();
+                }
             }
             Mini_FAT.write_FAT();
         }
