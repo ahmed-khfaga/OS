@@ -14,19 +14,7 @@ namespace OS
         public int dir_First_Cluster;
         public int dir_FileSize;
 
-        public Directory_Entry(string name, byte dirAttr, int dirFirstCluster) : this()
-        {
-            dir_Attr = dirAttr;
-            dir_First_Cluster = dirFirstCluster;
-            if (dirAttr == 0x10)  //directory
-
-                assign_DirName(name); //no extenstion
-
-            else                    //file
-
-                AssignFileName(name);  //need extenstion for files
-
-        }
+        
         //public Directory_Entry(char[] nameArr, byte dirAttr, int dirFirstCluster, int fileSize) : this()
         //{
         //    Array.Copy(nameArr, Dir_Namee, Math.Min(11, nameArr.Length)); // Use Math.Min for safety
@@ -41,24 +29,13 @@ namespace OS
         //        Console.WriteLine($"Warning: Name truncated to 11 characters.");
         //    }
         //}
-        public Directory_Entry()
-        {
-            dir_Attr = 0;
-            dir_First_Cluster = 0;
-            dir_FileSize = 0;
-            Array.Clear(Dir_Namee, 0, Dir_Namee.Length);
-            Array.Clear(Dir_Empty, 0, Dir_Empty.Length);
-        }
-        public Directory_Entry(char[] Dir_Name, byte dir_Attribute,int file_size ,int f_Cluster)
+       
+        public Directory_Entry(char[] Dir_Name, byte dir_Attribute,int f_Cluster)
         {
             string DIR_NAME = new string(Dir_Name);
-
             assign_DirName(DIR_NAME);
-
             this.dir_Attr = dir_Attribute;
-            this.dir_FileSize = file_size;
-            this.dir_First_Cluster = f_Cluster;
-           
+            this.dir_First_Cluster = f_Cluster;          
             Array.Clear(Dir_Empty, 0, Dir_Empty.Length);
 
         }
@@ -98,6 +75,7 @@ namespace OS
                 dir_Attr = 0x10; // Directory attribute
             }
         }
+
         //private string clean_The_Name(string name)
         //{
         //   // string cleaned = name.Trim();
@@ -131,7 +109,7 @@ namespace OS
                     cleaned_Name += " ";
                 }
             }
-
+            cleaned_Name=cleaned_Name.Trim();
 
             Array.Clear(Dir_Namee, 0, Dir_Namee.Length); // Clear the array
             Array.Copy(cleaned_Name.ToCharArray(), Dir_Namee, cleaned_Name.Length);

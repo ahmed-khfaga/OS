@@ -3,20 +3,20 @@
   "WorkspaceRootPath": "D:\\OS\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{16611D8E-C101-4658-BEB4-4E0C9BCACACD}|OS\\OS.csproj|d:\\os\\os\\parserclass.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{16611D8E-C101-4658-BEB4-4E0C9BCACACD}|OS\\OS.csproj|solutionrelative:os\\parserclass.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{16611D8E-C101-4658-BEB4-4E0C9BCACACD}|OS\\OS.csproj|d:\\os\\os\\command_line.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{16611D8E-C101-4658-BEB4-4E0C9BCACACD}|OS\\OS.csproj|solutionrelative:os\\command_line.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{16611D8E-C101-4658-BEB4-4E0C9BCACACD}|OS\\OS.csproj|D:\\OS\\os\\file_entry.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{16611D8E-C101-4658-BEB4-4E0C9BCACACD}|OS\\OS.csproj|solutionrelative:os\\file_entry.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{16611D8E-C101-4658-BEB4-4E0C9BCACACD}|OS\\OS.csproj|D:\\OS\\os\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{16611D8E-C101-4658-BEB4-4E0C9BCACACD}|OS\\OS.csproj|solutionrelative:os\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{16611D8E-C101-4658-BEB4-4E0C9BCACACD}|OS\\OS.csproj|D:\\OS\\os\\directory.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{16611D8E-C101-4658-BEB4-4E0C9BCACACD}|OS\\OS.csproj|solutionrelative:os\\directory.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{16611D8E-C101-4658-BEB4-4E0C9BCACACD}|OS\\OS.csproj|D:\\OS\\os\\converter.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{16611D8E-C101-4658-BEB4-4E0C9BCACACD}|OS\\OS.csproj|solutionrelative:os\\converter.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{16611D8E-C101-4658-BEB4-4E0C9BCACACD}|OS\\OS.csproj|D:\\OS\\os\\directory_entry.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -31,8 +31,12 @@
       "RelativeMoniker": "D:0:0:{16611D8E-C101-4658-BEB4-4E0C9BCACACD}|OS\\OS.csproj|solutionrelative:os\\mini_fat.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{16611D8E-C101-4658-BEB4-4E0C9BCACACD}|OS\\OS.csproj|D:\\OS\\os\\converter.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{16611D8E-C101-4658-BEB4-4E0C9BCACACD}|OS\\OS.csproj|solutionrelative:os\\converter.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{16611D8E-C101-4658-BEB4-4E0C9BCACACD}|OS\\OS.csproj|D:\\OS\\os\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{16611D8E-C101-4658-BEB4-4E0C9BCACACD}|OS\\OS.csproj|solutionrelative:os\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{16611D8E-C101-4658-BEB4-4E0C9BCACACD}|OS\\OS.csproj|D:\\OS\\os\\file_entry.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{16611D8E-C101-4658-BEB4-4E0C9BCACACD}|OS\\OS.csproj|solutionrelative:os\\file_entry.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -42,7 +46,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 3,
+          "SelectedChildIndex": 2,
           "Children": [
             {
               "$type": "Document",
@@ -52,10 +56,11 @@
               "RelativeDocumentMoniker": "OS\\Mini_FAT.cs",
               "ToolTip": "D:\\OS\\OS\\Mini_FAT.cs",
               "RelativeToolTip": "OS\\Mini_FAT.cs",
-              "ViewState": "AQIAAJwAAAAAAAAAAAAUwKkAAAAMAAAA",
+              "ViewState": "AQIAAJ0AAAAAAAAAAAAWwKwAAAAIAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-12-06T09:12:52.308Z",
-              "IsPinned": true
+              "IsPinned": true,
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
@@ -65,32 +70,46 @@
               "RelativeDocumentMoniker": "OS\\Virtual_Disk.cs",
               "ToolTip": "D:\\OS\\OS\\Virtual_Disk.cs",
               "RelativeToolTip": "OS\\Virtual_Disk.cs",
-              "ViewState": "AQIAACUAAAAAAAAAAAAUwDQAAAAQAAAA",
+              "ViewState": "AQIAACQAAAAAAAAAAAAjwDgAAAAIAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-12-06T09:12:32.577Z",
-              "IsPinned": true
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "Directory.cs",
-              "DocumentMoniker": "D:\\OS\\OS\\Directory.cs",
-              "RelativeDocumentMoniker": "OS\\Directory.cs",
-              "ToolTip": "D:\\OS\\OS\\Directory.cs",
-              "RelativeToolTip": "OS\\Directory.cs",
-              "ViewState": "AQIAAFgAAAAAAAAAAAAIwGMAAAAIAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-12-11T21:54:48.862Z"
+              "IsPinned": true,
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 0,
+              "Title": "ParserClass.cs",
+              "DocumentMoniker": "D:\\OS\\OS\\ParserClass.cs",
+              "RelativeDocumentMoniker": "OS\\ParserClass.cs",
+              "ToolTip": "D:\\OS\\OS\\ParserClass.cs",
+              "RelativeToolTip": "OS\\ParserClass.cs",
+              "ViewState": "AQIAAAYAAAAAAAAAAAAAAA0AAAAkAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-12-21T17:07:51.009Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "File_Entry.cs",
+              "DocumentMoniker": "D:\\OS\\OS\\File_Entry.cs",
+              "RelativeDocumentMoniker": "OS\\File_Entry.cs",
+              "ToolTip": "D:\\OS\\OS\\File_Entry.cs",
+              "RelativeToolTip": "OS\\File_Entry.cs",
+              "ViewState": "AQIAAI4AAAAAAAAAAAAwwKEAAAAMAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-12-06T09:14:54.758Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
               "Title": "Command_Line.cs",
               "DocumentMoniker": "D:\\OS\\OS\\Command_Line.cs",
               "RelativeDocumentMoniker": "OS\\Command_Line.cs",
               "ToolTip": "D:\\OS\\OS\\Command_Line.cs",
               "RelativeToolTip": "OS\\Command_Line.cs",
-              "ViewState": "AQIAAPUAAAAAAAAAAAAYwP4AAAApAAAA",
+              "ViewState": "AQIAABwBAAAAAAAAAAAjwCgBAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-12-06T09:16:26.63Z",
               "EditorCaption": ""
@@ -98,27 +117,15 @@
             {
               "$type": "Document",
               "DocumentIndex": 2,
-              "Title": "Program.cs",
-              "DocumentMoniker": "D:\\OS\\OS\\Program.cs",
-              "RelativeDocumentMoniker": "OS\\Program.cs",
-              "ToolTip": "D:\\OS\\OS\\Program.cs",
-              "RelativeToolTip": "OS\\Program.cs",
-              "ViewState": "AQIAAAkAAAAAAAAAAAAIwBYAAAAMAAAA",
+              "Title": "Directory.cs",
+              "DocumentMoniker": "D:\\OS\\OS\\Directory.cs",
+              "RelativeDocumentMoniker": "OS\\Directory.cs",
+              "ToolTip": "D:\\OS\\OS\\Directory.cs",
+              "RelativeToolTip": "OS\\Directory.cs",
+              "ViewState": "AQIAALwAAAAAAAAAAAArwOMAAAAOAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-12-06T20:30:57.347Z",
+              "WhenOpened": "2024-12-11T21:54:48.862Z",
               "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 7,
-              "Title": "Converter.cs",
-              "DocumentMoniker": "D:\\OS\\OS\\Converter.cs",
-              "RelativeDocumentMoniker": "OS\\Converter.cs",
-              "ToolTip": "D:\\OS\\OS\\Converter.cs",
-              "RelativeToolTip": "OS\\Converter.cs",
-              "ViewState": "AQIAAHwAAAAAAAAAAAAIwIsAAAAUAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-12-12T16:28:11.274Z"
             },
             {
               "$type": "Document",
@@ -128,21 +135,35 @@
               "RelativeDocumentMoniker": "OS\\Directory_Entry.cs",
               "ToolTip": "D:\\OS\\OS\\Directory_Entry.cs",
               "RelativeToolTip": "OS\\Directory_Entry.cs",
-              "ViewState": "AQIAACgAAAAAAAAAAAAIwDQAAAAIAAAA",
+              "ViewState": "AQIAABcAAAAAAAAAAAAewCgAAAAIAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-12-06T09:13:42.185Z"
+              "WhenOpened": "2024-12-06T09:13:42.185Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "File_Entry.cs",
-              "DocumentMoniker": "D:\\OS\\OS\\File_Entry.cs",
-              "RelativeDocumentMoniker": "OS\\File_Entry.cs",
-              "ToolTip": "D:\\OS\\OS\\File_Entry.cs",
-              "RelativeToolTip": "OS\\File_Entry.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAK8AAAAeAAAA",
+              "DocumentIndex": 3,
+              "Title": "Converter.cs",
+              "DocumentMoniker": "D:\\OS\\OS\\Converter.cs",
+              "RelativeDocumentMoniker": "OS\\Converter.cs",
+              "ToolTip": "D:\\OS\\OS\\Converter.cs",
+              "RelativeToolTip": "OS\\Converter.cs",
+              "ViewState": "AQIAAIsAAAAAAAAAAAAjwJkAAAAIAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-12-06T09:14:54.758Z",
+              "WhenOpened": "2024-12-12T16:28:11.274Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "Program.cs",
+              "DocumentMoniker": "D:\\OS\\OS\\Program.cs",
+              "RelativeDocumentMoniker": "OS\\Program.cs",
+              "ToolTip": "D:\\OS\\OS\\Program.cs",
+              "RelativeToolTip": "OS\\Program.cs",
+              "ViewState": "AQIAAAwAAAAAAAAAAAAjwBkAAAAQAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-12-06T20:30:57.347Z",
               "EditorCaption": ""
             }
           ]

@@ -110,3 +110,17 @@ D:\OS\OS\obj\Debug\net8.0\refint\OS.dll
 D:\OS\OS\obj\Debug\net8.0\OS.pdb
 D:\OS\OS\obj\Debug\net8.0\OS.genruntimeconfig.cache
 D:\OS\OS\obj\Debug\net8.0\ref\OS.dll
+D:\shit\OS\OS\bin\Debug\net8.0\OS.exe
+D:\shit\OS\OS\bin\Debug\net8.0\OS.deps.json
+D:\shit\OS\OS\bin\Debug\net8.0\OS.runtimeconfig.json
+D:\shit\OS\OS\bin\Debug\net8.0\OS.dll
+D:\shit\OS\OS\bin\Debug\net8.0\OS.pdb
+D:\shit\OS\OS\obj\Debug\net8.0\OS.GeneratedMSBuildEditorConfig.editorconfig
+D:\shit\OS\OS\obj\Debug\net8.0\OS.AssemblyInfoInputs.cache
+D:\shit\OS\OS\obj\Debug\net8.0\OS.AssemblyInfo.cs
+D:\shit\OS\OS\obj\Debug\net8.0\OS.csproj.CoreCompileInputs.cache
+D:\shit\OS\OS\obj\Debug\net8.0\OS.dll
+D:\shit\OS\OS\obj\Debug\net8.0\refint\OS.dll
+D:\shit\OS\OS\obj\Debug\net8.0\OS.pdb
+D:\shit\OS\OS\obj\Debug\net8.0\OS.genruntimeconfig.cache
+D:\shit\OS\OS\obj\Debug\net8.0\ref\OS.dll

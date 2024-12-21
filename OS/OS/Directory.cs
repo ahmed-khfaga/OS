@@ -12,7 +12,7 @@ namespace OS
         public List<Directory_Entry> DirectoryTable;
         public int cluster_Index;
 
-        public Directory(char []name, byte attr, int first_Cluster, int file_size, Directory Parent) : base(name, attr, file_size, first_Cluster)
+        public Directory(char []name, byte attr, int first_Cluster, Directory Parent) : base(name, attr, first_Cluster)
         {
             DirectoryTable = new List<Directory_Entry>();
 
@@ -24,7 +24,7 @@ namespace OS
 
         public Directory_Entry Get_Directory_Entry()
         {
-            Directory_Entry me = new Directory_Entry(this.Dir_Namee, this.dir_Attr, this.dir_FileSize, this.dir_First_Cluster);
+            Directory_Entry me = new Directory_Entry(this.Dir_Namee, this.dir_Attr, this.dir_First_Cluster);
             for (int i = 0; i < 12; i++)
             {
                 me.Dir_Empty[i] = this.Dir_Empty[i];
@@ -120,9 +120,8 @@ namespace OS
 
                 DirectoryTable = Converter.BytesToDirectory_Entries(ls);
             }
-
-
         }
+
         public void Write_Directory()
         {
             Directory_Entry o = Get_Directory_Entry();
@@ -174,7 +173,7 @@ namespace OS
             }
 
             Directory_Entry n = Get_Directory_Entry();
-            if (this.Parent != null)
+            if (Parent != null)
             {
                 this.Parent.Update_Content(o, n);
             }
@@ -192,8 +191,9 @@ namespace OS
             if (index != -1)
             {
                 DirectoryTable[index] = NEW;
-                Write_Directory();
             }
+            Write_Directory();
+
         }
 
 
@@ -209,7 +209,11 @@ namespace OS
             for (int i = 0; i < DirectoryTable.Count; i++)
             {
                 string dirNameInTable = new string(DirectoryTable[i].Dir_Namee.Where(c => c != '\0').ToArray()).Trim();
-                if (dirNameInTable.Equals(name, StringComparison.OrdinalIgnoreCase))
+                if(name.Contains("\0"))
+                {
+                    name = name.Replace("\0", " ");
+                }
+                if (dirNameInTable.Equals(name.Trim(), StringComparison.OrdinalIgnoreCase))
                 {
                     return i; // Directory found
                 }
@@ -219,8 +223,9 @@ namespace OS
 
         public void add_Entry(Directory_Entry d)
         {
+
             DirectoryTable.Add(d);
-            Write_Directory();
+            //Write_Directory();
 
         }
         public void remove_Entry(Directory_Entry d)
@@ -253,33 +258,6 @@ namespace OS
             Mini_FAT.write_FAT();
         }
 
-        public void CreateSubdirectory(string name)
-        {
-            // Check if a subdirectory with the same name already exists
-            if (search_Directory(name) != -1)
-            {
-                throw new Exception($"A subdirectory or file with the name '{name}' already exists.");
-            }
-
-            // Allocate a cluster for the new subdirectory
-            int newCluster = Mini_FAT.get_Availabel_Cluster();
-            if (newCluster == -1)
-            {
-                throw new Exception("No available clusters to create a new subdirectory.");
-            }
-
-            // Create a new subdirectory object
-            Directory subdirectory = new Directory(name.ToCharArray(), 0x10, newCluster, 0, this);
-
-            // Add the special "." and ".." entries
-            subdirectory.DirectoryTable.Add(subdirectory.Get_Directory_Entry()); // Self-reference "."
-            subdirectory.DirectoryTable.Add(this.Get_Directory_Entry());        // Parent reference ".."
-
-            // Write the new subdirectory to disk
-            subdirectory.Write_Directory();
-
-            // Add the subdirectory entry to the current directory's table
-            add_Entry(subdirectory.Get_Directory_Entry());
-        }
+        
     }
 }

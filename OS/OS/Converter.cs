@@ -120,7 +120,7 @@ namespace OS
             int fileSize = BitConverter.ToInt32(bytes.ToArray(), 28);
 
             // إنشاء الكائن
-            return new Directory_Entry(formattedFileName.ToCharArray(), fileAttribute, firstCluster,fileSize)
+            return new Directory_Entry(formattedFileName.ToCharArray(), fileAttribute, firstCluster)
             {
                 Dir_Empty = reservedBytes,
                 dir_FileSize = fileSize
@@ -134,7 +134,11 @@ namespace OS
             {
                 List<byte> chunk = bytes.GetRange(i, Math.Min(32, bytes.Count - i));
                 Directory_Entry entry = BytesToDirectory_Entry(chunk);
-                string name = new string(entry.Dir_Namee).Trim();
+                if (chunk[0] == 0 )
+                {
+                    break;
+                }
+                string name =  new string(entry.Dir_Namee).Trim();
                 if (name == "")
                 {
                     continue;

@@ -14,58 +14,108 @@ namespace OS
         public string[] comm_Arg;
 
 
-        public static Directory? MoveToDir(string fullPath)
+        #region movetoDir me
+        //public static Directory? MoveToDir(string fullPath)
+        //{
+        //    // Split the path into its parts
+        //    string[] pathParts = fullPath.Split("\\");
+
+        //    // First, check if the root directory matches
+        //    string rootName = new string(Mini_FAT.Root.Dir_Namee).PadRight(11, '\0');
+        //    if (rootName.Contains("\0"))
+        //    {
+        //        rootName = rootName.Replace('\0', ' ');
+        //    }
+
+        //    if (pathParts[0].Trim() != rootName.Trim())
+        //    {
+        //        Console.WriteLine($"Error: The root in the specified path \"{fullPath}\" does not exist.");
+        //        return null;
+        //    }
+
+        //    // Start from the root directory
+        //    Directory currentDir = Mini_FAT.Root;
+        //    currentDir.Read_Directory();
+
+        //    for (int i = 1; i < pathParts.Length; i++)
+        //    {
+        //        string dirName = pathParts[i].Trim();
+        //        int index = currentDir.search_Directory(dirName);
+
+        //        if (index == -1)
+        //        {
+        //            Console.WriteLine($"Error: The path \"{fullPath}\" does not exist.");
+        //            return null;
+        //        }
+
+        //        Directory_Entry entry = currentDir.DirectoryTable[index];
+        //        if (entry.dir_Attr != 0x10) 
+        //        {
+        //            Console.WriteLine($"Error: The path \"{fullPath}\" is not a directory.");
+        //            return null;
+        //        }
+
+        //        int firstCluster = entry.dir_First_Cluster;
+        //        Directory nextDir = new Directory(dirName.ToCharArray(), 0x10, firstCluster, currentDir);
+        //        nextDir.Read_Directory();
+
+        //        // Move to the next directory
+        //        currentDir = nextDir;
+        //    }
+
+        //    Program.currentDirectory = currentDir;
+        //    Program.path = fullPath;
+
+        //    return currentDir;
+        //} 
+        #endregion
+
+        public static Directory MoveToDir(string fullPath, Directory currentDirectory)
         {
-            // Split the path into its parts
-            string[] pathParts = fullPath.Split("\\");
-
-            // First, check if the root directory matches
-            string rootName = new string(Mini_FAT.Root.Dir_Namee).PadRight(11, '\0');
-            if (rootName.Contains("\0"))
+            string[] parts = fullPath.Split('\\');
+            if (parts.Length == 0)
             {
-                rootName = rootName.Replace('\0', ' ');
-            }
-
-            if (pathParts[0].Trim() != rootName.Trim())
-            {
-                Console.WriteLine($"Error: The root in the specified path \"{fullPath}\" does not exist.");
+                Console.WriteLine("Error: Invalid path.");
                 return null;
             }
 
-            // Start from the root directory
-            Directory currentDir = Mini_FAT.Root;
-            currentDir.Read_Directory();
+            Directory targetDirectory = currentDirectory;
 
-            for (int i = 1; i < pathParts.Length; i++)
+            string s = new string(currentDirectory.Dir_Namee);
+            
+            if (parts[0].Equals (s.Trim('\0'), StringComparison.OrdinalIgnoreCase))
             {
-                string dirName = pathParts[i].Trim();
-                int index = currentDir.search_Directory(dirName);
-
-                if (index == -1)
-                {
-                    Console.WriteLine($"Error: The path \"{fullPath}\" does not exist.");
-                    return null;
-                }
-
-                Directory_Entry entry = currentDir.DirectoryTable[index];
-                if (entry.dir_Attr != 0x10) 
-                {
-                    Console.WriteLine($"Error: The path \"{fullPath}\" is not a directory.");
-                    return null;
-                }
-
-                int firstCluster = entry.dir_First_Cluster;
-                Directory nextDir = new Directory(dirName.ToCharArray(), 0x10, firstCluster, 0, currentDir);
-                nextDir.Read_Directory();
-
-                // Move to the next directory
-                currentDir = nextDir;
+                parts = parts.Skip(1).ToArray();
             }
 
-            Program.currentDirectory = currentDir;
-            Program.path = fullPath;
+            foreach (var part in parts)
+            {
+                if (string.IsNullOrWhiteSpace(part))
+                {
+                    continue;
+                }
 
-            return currentDir;
+                int index = targetDirectory.search_Directory(part);
+                if (index == -1)
+                {
+                    Console.WriteLine($"Error: Directory '{part}' not found.");
+                    return null;
+                }
+
+                Directory_Entry entry = targetDirectory.DirectoryTable[index];
+
+                if ((entry.dir_Attr & 0x10) != 0x10)
+                {
+                    Console.WriteLine($"Error: '{part}' is not a directory.");
+                    return null;
+                }
+
+                targetDirectory = new Directory(entry.Dir_Namee, entry.dir_Attr, entry.dir_First_Cluster, targetDirectory);
+                targetDirectory.Read_Directory();
+            }
+            
+
+            return targetDirectory;
         }
         public Command_Line(string command)
         {
@@ -145,7 +195,7 @@ namespace OS
                     {
                         folder_Counter++;
                         string S = new string(Program.currentDirectory.DirectoryTable[i].Dir_Namee);
-                        Console.WriteLine("\t\t<DIR>\t\t" + S);
+                        Console.WriteLine("\t\t<DIR>\t\t" + S.Trim());
                     }
 
                 }
@@ -251,7 +301,7 @@ namespace OS
                 string dname = commandArray_2Agr[1];
                 if(dname.Contains("\\"))
                 {
-                    MoveToDir(dname);
+                    MoveToDir(dname, Program.currentDirectory);
                     int file_Counter = 0;
                     int folder_Counter = 0;
                     int file_Sizes = 0;
@@ -308,12 +358,17 @@ namespace OS
                     Console.WriteLine("Folder already exists.");
                     return;
                 }
-
-                Directory newDir = new Directory(dirName.ToCharArray(), 0x10,0,0, Program.currentDirectory);
+                int fc = Mini_FAT.get_Availabel_Cluster();
+                Directory newDir = new Directory(dirName.ToCharArray(), 0x10,fc, Program.currentDirectory);
                 if (Program.currentDirectory.Can_Add_Entry(newDir))
                 {
-                    Program.currentDirectory.add_Entry(newDir);  
-                    
+                    Program.currentDirectory.add_Entry(newDir);
+                    Program.currentDirectory.Write_Directory();
+                    if(Program.currentDirectory.Parent != null)
+                    {
+                        Program.currentDirectory.Parent.Write_Directory();
+                        //Program.currentDirectory.Update_Content(Program.currentDirectory.Get_Directory_Entry(), Program.currentDirectory.Parent.Get_Directory_Entry());    
+                    }
 
                     Console.WriteLine($"Directory '{dirName}' created successfully.");
                     
@@ -345,12 +400,29 @@ namespace OS
                     }
 
                     int firstCluster = entry.dir_First_Cluster;
-                    Directory dirToDelete = new Directory(name.ToCharArray(), entry.dir_Attr ,firstCluster, 0,Program.currentDirectory);
+                    Directory dirToDelete = new Directory(name.ToCharArray(), entry.dir_Attr ,firstCluster,Program.currentDirectory);
 
                     dirToDelete.Read_Directory();
                     if (dirToDelete.DirectoryTable.Count > 0)
                     {
+                        dirToDelete.DirectoryTable.Clear();
+
                         Console.WriteLine($"Error: Directory '{name}' is not empty.");
+                        string answer;
+                        Console.Write($"Are You Sure You want delete Directory '{name}' [yes , no] : ");
+                        answer = Console.ReadLine();
+                        if (answer == "yes" || answer == "y")
+                        {
+                            dirToDelete.delete_Directory();
+                            Program.currentDirectory.DirectoryTable.RemoveAt(index);
+                            Program.currentDirectory.Write_Directory();
+                            Console.WriteLine($"Directory '{name}' deleted successfully.");
+                        }
+                        else
+                        {
+                            Console.WriteLine($"Directory '{name}' not deleted ");
+                            Program.currentDirectory.Write_Directory();
+                        }
                     }
                     else
                     {
@@ -378,52 +450,70 @@ namespace OS
             
             //work xd 
             #region cd command
-            else if (commandArray_2Agr[0].ToLower() == "cd")
-            {
-                string dname = commandArray_2Agr[1];
+            //else if (commandArray_2Agr[0].ToLower() == "cd")
+            //{
+            //    string dname = commandArray_2Agr[1];
 
-                if(dname == ".")
-                {
-                    return;
-                }
-                // if cd N:\f 
-                if(dname.Contains("\\"))
-                {
+            //    if(dname == ".")
+            //    {
+            //        return;
+            //    }
+            //    // if cd N:\f 
+            //    if(dname.Contains("\\"))
+            //    {
 
-                    MoveToDir(dname);
+            //        MoveToDir(dname,Program.currentDirectory);
+            //        return;
 
                     
-                }
-                if (dname == "..")
-                {
-                    if (Program.currentDirectory.Parent != null)
-                    {
-                        Program.currentDirectory = Program.currentDirectory.Parent;
-                        // Correctly update Program.Path
-                        int lastBackslash = Program.path.LastIndexOf('\\');
-                        if (lastBackslash > 0) // Avoid going beyond the root
-                        {
-                            Program.path = Program.path.Substring(0, lastBackslash);
+            //    }
+            //    if (dname == "..")
+            //    {
+            //        if (Program.currentDirectory.Parent != null)
+            //        {
+            //            Program.currentDirectory = Program.currentDirectory.Parent;
+            //            // Correctly update Program.Path
+            //            int lastBackslash = Program.path.LastIndexOf('\\');
+            //            if (lastBackslash > 0) // Avoid going beyond the root
+            //            {
+            //                Program.path = Program.path.Substring(0, lastBackslash);
+            //                Program.currentDirectory.Read_Directory();
 
-                        }
-                        else
-                        {
-                            Program.path = "N:"; // Or however you represent your root.
-                        }
+            //            }                      
+            //            return; // Important: Exit after handling ".."
+            //        }
+            //        else
+            //        {
+            //            Console.WriteLine("Already at the root directory."); // Inform the user
+            //            return;
+            //        }
 
-                        return; // Important: Exit after handling ".."
-                    }
-                    else
-                    {
-                        Console.WriteLine("Already at the root directory."); // Inform the user
-                        return;
-                    }
+            //    }
+            //    else
+            //    {
+            //        int index = Program.currentDirectory.search_Directory(dname);
+            //        if (index == -1)
+            //        {
+            //            Console.WriteLine("Error : this Directory does not exits ");
+            //        }
+            //        else
+            //        {
 
-                }
+            //            Directory_Entry entry = Program.currentDirectory.DirectoryTable[index];
+                        
+            //            Directory newDir = new Directory(dname.ToCharArray(), 0x10, entry.dir_First_Cluster, Program.currentDirectory);
+            //            Program.currentDirectory = newDir;
+            //            Program.path += "\\" + dname;
+            //            Program.currentDirectory.Read_Directory();
 
-
-            }                       
+            //        }
+            //    }
+            //}                       
             #endregion
+            else if (commandArray_2Agr[0].ToLower() == "cd")
+            {
+                ParserClass.ChangeDirectory(commandArray_2Agr[1]);
+            }
         
             // work
             else if (commandArray_2Agr[0].ToLower() == "rename")
@@ -456,7 +546,7 @@ namespace OS
                         else
                         {
 
-                            Directory_Entry d = new Directory_Entry(commandArray_2Agr[2].ToCharArray(), 0x10, firstClusterOld, FileSize);
+                            Directory_Entry d = new Directory_Entry(commandArray_2Agr[2].ToCharArray(), 0x10, firstClusterOld);
                             Program.currentDirectory.DirectoryTable.RemoveAt(indexOld);
                             Program.currentDirectory.DirectoryTable.Insert(indexOld, d);
                             // Program.currentDirectory.Update_Content(o, d);
@@ -486,7 +576,7 @@ namespace OS
                     {
                         File_Entry f = new File_Entry(fileName.ToCharArray(), 0x0, fc, size,Program.currentDirectory, fileContent);
                         f.Write_File_Content();
-                        Directory_Entry d = new Directory_Entry(fileName, 0, f.dir_First_Cluster);
+                        Directory_Entry d = new Directory_Entry(fileName.ToCharArray(), 0x0, f.dir_First_Cluster);
                         Program.currentDirectory.DirectoryTable.Add(d);
                         Program.currentDirectory.Write_Directory();
 
@@ -539,7 +629,7 @@ namespace OS
                         {
                             int FirstCluster = Program.currentDirectory.DirectoryTable[index].dir_First_Cluster;
                             int fileSize = Program.currentDirectory.DirectoryTable[index].dir_FileSize;
-                            Directory f = new Directory(commandArray_2Agr[1].ToCharArray(), 1, FirstCluster, fileSize, Program.currentDirectory);
+                            Directory f = new Directory(commandArray_2Agr[1].ToCharArray(), 1, FirstCluster,Program.currentDirectory);
                             f.Write_Directory();
                             f.Read_Directory();
                             StreamWriter StreamWriter = new StreamWriter(commandArray_2Agr[2].ToString() + "\\" + commandArray_2Agr[1].ToString());
@@ -619,7 +709,7 @@ namespace OS
                         else
                         {
                             int F_Cluster = Program.currentDirectory.DirectoryTable[destination_index].dir_First_Cluster;
-                            Directory d = new Directory(commandArray_2Agr[2].ToCharArray(), 1, F_Cluster, 0, Program.currentDirectory);
+                            Directory d = new Directory(commandArray_2Agr[2].ToCharArray(), 1, F_Cluster, Program.currentDirectory);
                             int f_cluster = Program.currentDirectory.DirectoryTable[indexSource].dir_First_Cluster;
                             int file_size = Program.currentDirectory.DirectoryTable[indexSource].dir_FileSize;
                             Program.currentDirectory = d;
@@ -634,7 +724,7 @@ namespace OS
                     else
                     {
                         int F_Cluster = Mini_FAT.get_Availabel_Cluster();
-                        Directory d = new Directory(commandArray_2Agr[2].ToCharArray(), 0, F_Cluster, 0, Program.currentDirectory);
+                        Directory d = new Directory(commandArray_2Agr[2].ToCharArray(), 0, F_Cluster, Program.currentDirectory);
                         Program.currentDirectory.DirectoryTable.Add(d);
 
                         int f_cluster = Program.currentDirectory.DirectoryTable[indexSource].dir_First_Cluster;
