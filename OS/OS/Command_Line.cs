@@ -82,7 +82,9 @@ namespace OS
             Directory targetDirectory = currentDirectory;
 
             string s = new string(currentDirectory.Dir_Namee);
-            
+            if (s.Contains("\0"))
+                s = s.Replace("\0", " ");
+            s = s.Trim();
             if (parts[0].Equals (s.Trim('\0'), StringComparison.OrdinalIgnoreCase))
             {
                 parts = parts.Skip(1).ToArray();
@@ -358,8 +360,8 @@ namespace OS
                     Console.WriteLine("Folder already exists.");
                     return;
                 }
-                int fc = Mini_FAT.get_Availabel_Cluster();
-                Directory newDir = new Directory(dirName.ToCharArray(), 0x10,fc, Program.currentDirectory);
+                //int fc = Mini_FAT.get_Availabel_Cluster();
+                Directory newDir = new Directory(dirName.ToCharArray(), 0x10,0, Program.currentDirectory);
                 if (Program.currentDirectory.Can_Add_Entry(newDir))
                 {
                     Program.currentDirectory.add_Entry(newDir);
@@ -367,7 +369,7 @@ namespace OS
                     if(Program.currentDirectory.Parent != null)
                     {
                         Program.currentDirectory.Parent.Write_Directory();
-                        //Program.currentDirectory.Update_Content(Program.currentDirectory.Get_Directory_Entry(), Program.currentDirectory.Parent.Get_Directory_Entry());    
+                        Program.currentDirectory.Update_Content(Program.currentDirectory.Get_Directory_Entry(), Program.currentDirectory.Parent.Get_Directory_Entry());    
                     }
 
                     Console.WriteLine($"Directory '{dirName}' created successfully.");
@@ -378,76 +380,21 @@ namespace OS
                     Console.WriteLine("Error: Could not create the directory.");
                 }
             }
-            
+
             // work
             else if (commandArray_2Agr[0].ToLower() == "rd")
             {
-                string name = commandArray_2Agr[1].Trim();
-                int index = Program.currentDirectory.search_Directory(name);
-
-                if (index == -1)
+                if (commandArray_2Agr.Length < 2)
                 {
-                    Console.WriteLine($"Error: Directory '{name}' not found.");
+                    Console.WriteLine("Error: No directories specified to remove.");
                 }
                 else
                 {
-                    Directory_Entry entry = Program.currentDirectory.DirectoryTable[index];
-
-                    if (entry.dir_Attr != 0x10)
-                    {
-                        Console.WriteLine($"Error: '{name}' is not a directory.");
-                        return;
-                    }
-
-                    int firstCluster = entry.dir_First_Cluster;
-                    Directory dirToDelete = new Directory(name.ToCharArray(), entry.dir_Attr ,firstCluster,Program.currentDirectory);
-
-                    dirToDelete.Read_Directory();
-                    if (dirToDelete.DirectoryTable.Count > 0)
-                    {
-                        dirToDelete.DirectoryTable.Clear();
-
-                        Console.WriteLine($"Error: Directory '{name}' is not empty.");
-                        string answer;
-                        Console.Write($"Are You Sure You want delete Directory '{name}' [yes , no] : ");
-                        answer = Console.ReadLine();
-                        if (answer == "yes" || answer == "y")
-                        {
-                            dirToDelete.delete_Directory();
-                            Program.currentDirectory.DirectoryTable.RemoveAt(index);
-                            Program.currentDirectory.Write_Directory();
-                            Console.WriteLine($"Directory '{name}' deleted successfully.");
-                        }
-                        else
-                        {
-                            Console.WriteLine($"Directory '{name}' not deleted ");
-                            Program.currentDirectory.Write_Directory();
-                        }
-                    }
-                    else
-                    {
-                       
-                            bool del = true; // yes
-                            string answer;
-                            Console.Write($"Are You Sure You want delete Directory '{name}' [yes , no] : ");
-                            answer = Console.ReadLine();
-                            if(answer == "yes" || answer =="y")
-                            {
-                                dirToDelete.delete_Directory();
-                                Program.currentDirectory.DirectoryTable.RemoveAt(index);
-                                Program.currentDirectory.Write_Directory();
-                                Console.WriteLine($"Directory '{name}' deleted successfully.");
-                            }
-                            else
-                            {
-                                Console.WriteLine($"Directory '{name}' not deleted ");
-                                Program.currentDirectory.Write_Directory();
-                            }
-                                                    
-                    }
+                    string[] directoriesToDelete = commandArray_2Agr.Skip(1).ToArray();
+                    ParserClass.RemoveDirectory(directoriesToDelete);
                 }
             }
-            
+
             //work xd 
             #region cd command
             //else if (commandArray_2Agr[0].ToLower() == "cd")
@@ -465,7 +412,7 @@ namespace OS
             //        MoveToDir(dname,Program.currentDirectory);
             //        return;
 
-                    
+
             //    }
             //    if (dname == "..")
             //    {
@@ -500,7 +447,7 @@ namespace OS
             //        {
 
             //            Directory_Entry entry = Program.currentDirectory.DirectoryTable[index];
-                        
+
             //            Directory newDir = new Directory(dname.ToCharArray(), 0x10, entry.dir_First_Cluster, Program.currentDirectory);
             //            Program.currentDirectory = newDir;
             //            Program.path += "\\" + dname;

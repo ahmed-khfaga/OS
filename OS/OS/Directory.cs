@@ -110,6 +110,7 @@ namespace OS
                     return;
                 do
                 {
+
                     ls.AddRange(Virtual_Disk.read_Cluster(cluster_Index));
                     cluster_Index = next;
                     if (cluster_Index != -1)
@@ -132,9 +133,9 @@ namespace OS
 
             if (this.dir_First_Cluster != 0)
             {
-                Empty_My_Clusters();
-                cluster_Index = Mini_FAT.get_Availabel_Cluster();
-                this.dir_First_Cluster = cluster_Index;
+                //Empty_My_Clusters();
+                //cluster_Index = Mini_FAT.get_Availabel_Cluster();
+                cluster_Index = this.dir_First_Cluster;
             }
             else
             {
@@ -146,8 +147,8 @@ namespace OS
 
             for (int i = 0; i < bytes.Count; i++)
             {
-                if (cluster_Index != -1)
-                {
+                //if (cluster_Index != -1)
+                //{
                     Virtual_Disk.write_Cluster(bytes[i], cluster_Index);
 
                     Mini_FAT.setNext(cluster_Index, -1);
@@ -160,7 +161,7 @@ namespace OS
                     last_Cluster = cluster_Index;
 
                     cluster_Index = Mini_FAT.get_Availabel_Cluster();
-                }
+                //}
             }
 
             if (DirectoryTable.Count == 0)
@@ -172,9 +173,10 @@ namespace OS
                 }
             }
 
-            Directory_Entry n = Get_Directory_Entry();
             if (Parent != null)
             {
+                Directory_Entry n = Get_Directory_Entry();
+
                 this.Parent.Update_Content(o, n);
             }
 

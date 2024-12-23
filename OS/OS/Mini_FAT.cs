@@ -143,13 +143,13 @@ namespace OS
                 Initialization();
 
                 write_FAT();
-                Root = new Directory(("N:".PadRight(11,'\0')).ToCharArray(), 0x10, 5, null);
+                Root = new Directory("N:".ToCharArray(), 0x10, 5, null);
                 Root.Write_Directory();
             }
             else
             {
                 readFAT();
-                Root = new Directory(("N:".PadRight(11, '\0')).ToCharArray(), 0x10, 5, null);
+                Root = new Directory("N:".ToCharArray(), 0x10, 5, null);
                 Root.Read_Directory();
 
             }
@@ -168,7 +168,7 @@ namespace OS
         public static int getNext(int clusterindex)
         {
 
-
+           // return FAT[clusterindex];
             return (clusterindex >= 0 && clusterindex < 1024) ? FAT[clusterindex] : -1;
         }
 
