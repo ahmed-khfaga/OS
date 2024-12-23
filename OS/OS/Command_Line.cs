@@ -70,55 +70,6 @@ namespace OS
         //} 
         #endregion
 
-        public static Directory MoveToDir(string fullPath, Directory currentDirectory)
-        {
-            string[] parts = fullPath.Split('\\');
-            if (parts.Length == 0)
-            {
-                Console.WriteLine("Error: Invalid path.");
-                return null;
-            }
-
-            Directory targetDirectory = currentDirectory;
-
-            string s = new string(currentDirectory.Dir_Namee);
-            if (s.Contains("\0"))
-                s = s.Replace("\0", " ");
-            s = s.Trim();
-            if (parts[0].Equals (s.Trim('\0'), StringComparison.OrdinalIgnoreCase))
-            {
-                parts = parts.Skip(1).ToArray();
-            }
-
-            foreach (var part in parts)
-            {
-                if (string.IsNullOrWhiteSpace(part))
-                {
-                    continue;
-                }
-
-                int index = targetDirectory.search_Directory(part);
-                if (index == -1)
-                {
-                    Console.WriteLine($"Error: Directory '{part}' not found.");
-                    return null;
-                }
-
-                Directory_Entry entry = targetDirectory.DirectoryTable[index];
-
-                if ((entry.dir_Attr & 0x10) != 0x10)
-                {
-                    Console.WriteLine($"Error: '{part}' is not a directory.");
-                    return null;
-                }
-
-                targetDirectory = new Directory(entry.Dir_Namee, entry.dir_Attr, entry.dir_First_Cluster, targetDirectory);
-                targetDirectory.Read_Directory();
-            }
-            
-
-            return targetDirectory;
-        }
         public Command_Line(string command)
         {
             comm_Arg = command.Split(" ");
@@ -172,6 +123,14 @@ namespace OS
             {
                 Console.WriteLine("Error : md command syntax is \n md [directory] \n[directory] can be a new directory name or fullpath of a new directory\nCreates a directory.");
             }
+            else if (command_Array[0].ToLower() == "rename")
+            {
+                Console.WriteLine("ERROR:\nRenames a file. \r\nrename command syntax is \r\nrename [fileName] [new fileName] \r\n[fileName] can be a file name or fullpath of a filename \r\n[new fileName] can be a new file name not fullpath");
+            }
+            else if (command_Array[0].ToLower() == "type")
+            {
+                Console.WriteLine("ERROR:\nDisplays the contents of a text file. \r\ntype command syntax is \r\ntype [file]+ \r\nNOTE: it displays the filename before its content for every \r\nfile \r\n[file] can be file Name (or fullpath of file) of text file \r\n+ after [file] represent that you can pass more than file \r\nName (or fullpath of file).");
+            }
             #region dir
             else if (command_Array[0].ToLower() == "dir") 
             {
@@ -179,19 +138,21 @@ namespace OS
                 int file_Counter = 0;
                 int folder_Counter = 0;
                 int file_Sizes = 0;
+                int total_File_Size = 0;
 
                 string name = new string(Program.currentDirectory.Dir_Namee);
-                Console.WriteLine($"Directory of {name} : \n");
+                Console.WriteLine($"Directory of {name} is  \n");
                 for (int i = 0; i < Program.currentDirectory.DirectoryTable.Count; i++)
                 {
                     if (Program.currentDirectory.DirectoryTable[i].dir_Attr == 0x0)
                     {
                         file_Counter++;
                         file_Sizes += Program.currentDirectory.DirectoryTable[i].dir_FileSize;
+                        total_File_Size += file_Sizes; 
                         string m = string.Empty;
                         m += new string(Program.currentDirectory.DirectoryTable[i].Dir_Namee);
-                        Console.WriteLine("\t\t<File>\t\t" + m);
-                        Console.WriteLine();
+                        Console.WriteLine($"\t\t{file_Sizes}\t\t" + m);
+                       // Console.WriteLine();
                     }
                     else if (Program.currentDirectory.DirectoryTable[i].dir_Attr == 0x10) // لو في فولدر 
                     {
@@ -204,7 +165,7 @@ namespace OS
                 Console.Write($"\t\t\t{file_Counter} File(s)\t ");
                 if (file_Counter > 0)
                 {
-                    Console.Write(file_Sizes);
+                    Console.Write(total_File_Size);
                     Console.WriteLine();
                 }
                 else
@@ -301,47 +262,7 @@ namespace OS
             {
                 
                 string dname = commandArray_2Agr[1];
-                if(dname.Contains("\\"))
-                {
-                    MoveToDir(dname, Program.currentDirectory);
-                    int file_Counter = 0;
-                    int folder_Counter = 0;
-                    int file_Sizes = 0;
-
-                    string name = new string(Program.currentDirectory.Dir_Namee);
-                    Console.WriteLine($"Directory of {name} : \n");
-                    for (int i = 0; i < Program.currentDirectory.DirectoryTable.Count; i++)
-                    {
-                        if (Program.currentDirectory.DirectoryTable[i].dir_Attr == 0x0)
-                        {
-                            file_Counter++;
-                            file_Sizes += Program.currentDirectory.DirectoryTable[i].dir_FileSize;
-                            string m = string.Empty;
-                            m += new string(Program.currentDirectory.DirectoryTable[i].Dir_Namee);
-                            Console.WriteLine("\t\t<File>\t\t" + m);
-                            Console.WriteLine();
-                        }
-                        else if (Program.currentDirectory.DirectoryTable[i].dir_Attr == 0x10) // لو في فولدر 
-                        {
-                            folder_Counter++;
-                            string S = new string(Program.currentDirectory.DirectoryTable[i].Dir_Namee);
-                            Console.WriteLine("\t\t<DIR>\t\t" + S);
-                        }
-
-                    }
-                    Console.Write($"\t\t\t{file_Counter} File(s)\t ");
-                    if (file_Counter > 0)
-                    {
-                        Console.Write(file_Sizes);
-                        Console.WriteLine();
-                    }
-                    else
-                    {
-                        Console.WriteLine();
-                    }
-                    Console.WriteLine($"\t\t\t{folder_Counter} Dir(s)\t {Mini_FAT.get_Free_Size()} bytes free");
-
-                }
+                ParserClass.list_OF_Directory(dname);
             }
             
             // work
@@ -465,65 +386,72 @@ namespace OS
             // work
             else if (commandArray_2Agr[0].ToLower() == "rename")
             {
-                int indexOld = Program.currentDirectory.search_Directory(commandArray_2Agr[1].ToString());
-                if (indexOld == -1)
-                {
-                    Console.WriteLine("The File is not Exist");
-                }
-                else
-                {
-                    int indexNew = Program.currentDirectory.search_Directory(commandArray_2Agr[2].ToString());
-                    if (indexNew != -1)
-                    {
-                        Console.WriteLine("can't Rename");
-                    }
-                    else
-                    {
-                        Directory_Entry o = Program.currentDirectory.DirectoryTable[indexOld]; 
-                        int firstClusterOld = Program.currentDirectory.DirectoryTable[indexOld].dir_First_Cluster;
-                        int FileSize = Program.currentDirectory.DirectoryTable[indexOld].dir_FileSize;
-                        if (Program.currentDirectory.DirectoryTable[indexOld].dir_Attr == 0x0)
-                        {
-                            File_Entry f = new File_Entry(commandArray_2Agr[1].ToCharArray(), 0, firstClusterOld, FileSize, Program.currentDirectory, "");
-                            f.Dir_Namee = commandArray_2Agr[2].ToCharArray();
-                            f.Write_File_Content();
-                            f.Read_File_Content();
-                            Program.currentDirectory.Write_Directory();
-                        }
-                        else
-                        {
 
-                            Directory_Entry d = new Directory_Entry(commandArray_2Agr[2].ToCharArray(), 0x10, firstClusterOld);
-                            Program.currentDirectory.DirectoryTable.RemoveAt(indexOld);
-                            Program.currentDirectory.DirectoryTable.Insert(indexOld, d);
-                            // Program.currentDirectory.Update_Content(o, d);
-                            Program.currentDirectory.Write_Directory();
-                        }
-
-                    }
-                }
+                ParserClass.Rename(commandArray_2Agr[1], commandArray_2Agr[2]);
             }
-            
+
             // work 
+            #region import
+            //else if (commandArray_2Agr[0].ToLower() == "import")
+            //{
+            //    string name = commandArray_2Agr[1];
+            //    if (System.IO.File.Exists(name))
+            //    {
+            //        Directory_Entry o = Program.currentDirectory.Get_Directory_Entry();
+
+            //        string[] pathParts = name.Split('\\'); // Split the path(extract name & size)
+            //        string fileName = pathParts[pathParts.Length - 1];
+            //        string fileContent = System.IO.File.ReadAllText(name);
+            //        int size = fileContent.Length;
+            //        int index = Program.currentDirectory.search_Directory(fileName);
+            //        int fc = o.dir_First_Cluster;
+
+
+            //        if (index == -1)
+            //        {
+            //            File_Entry f = new File_Entry(fileName.ToCharArray(), 0x0, fc, size,Program.currentDirectory, fileContent);
+            //            f.Write_File_Content();
+            //            Directory_Entry d = new Directory_Entry(fileName.ToCharArray(), 0x0, f.dir_First_Cluster);
+            //            Program.currentDirectory.DirectoryTable.Add(d);
+            //            Program.currentDirectory.Write_Directory();
+
+            //            if (Program.currentDirectory.Parent != null)
+            //            {
+            //                Program.currentDirectory.Parent.Update_Content(o, Program.currentDirectory.Get_Directory_Entry());
+            //            }
+            //        }
+            //        else
+            //        {
+            //            Console.WriteLine("Error: File with the same name already exists.");
+            //        }
+            //    }
+            //    else
+            //    {
+            //        Console.WriteLine("Error: The specified name is not a file.");
+            //    }
+            //} 
+            #endregion
             else if (commandArray_2Agr[0].ToLower() == "import")
             {
                 string name = commandArray_2Agr[1];
                 if (System.IO.File.Exists(name))
                 {
                     Directory_Entry o = Program.currentDirectory.Get_Directory_Entry();
-
-                    string[] pathParts = name.Split('\\'); // Split the path(extract name & size)
-                    string fileName = pathParts[pathParts.Length - 1];
+                    string fileName = System.IO.Path.GetFileName(name); // Extract file name
                     string fileContent = System.IO.File.ReadAllText(name);
                     int size = fileContent.Length;
                     int index = Program.currentDirectory.search_Directory(fileName);
-                    int fc = 0;
 
                     if (index == -1)
                     {
-                        File_Entry f = new File_Entry(fileName.ToCharArray(), 0x0, fc, size,Program.currentDirectory, fileContent);
+                        int fc = o.dir_First_Cluster;//== 0
+                        //         ? Mini_FAT.get_Availabel_Cluster()
+                        //         : o.dir_First_Cluster;
+
+                        File_Entry f = new File_Entry(fileName.ToCharArray(), 0x0, fc, size, Program.currentDirectory, fileContent);
                         f.Write_File_Content();
-                        Directory_Entry d = new Directory_Entry(fileName.ToCharArray(), 0x0, f.dir_First_Cluster);
+
+                        Directory_Entry d = new Directory_Entry(fileName.ToCharArray(), 0x0, f.dir_First_Cluster, size); // Include size
                         Program.currentDirectory.DirectoryTable.Add(d);
                         Program.currentDirectory.Write_Directory();
 
@@ -534,15 +462,16 @@ namespace OS
                     }
                     else
                     {
-                        Console.WriteLine("Error: File with the same name already exists.");
+                        Console.WriteLine($"Error: File '{fileName}' already exists in the current directory.");
                     }
                 }
                 else
                 {
-                    Console.WriteLine("Error: The specified name is not a file.");
+                    Console.WriteLine($"Error: The specified file '{name}' does not exist.");
                 }
             }
-            
+
+
             // work
             else if (commandArray_2Agr[0].ToLower() == "export")
             {

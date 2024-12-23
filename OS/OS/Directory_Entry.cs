@@ -39,6 +39,16 @@ namespace OS
             Array.Clear(Dir_Empty, 0, Dir_Empty.Length);
 
         }
+        public Directory_Entry(char[] Dir_Name, byte dir_Attribute, int f_Cluster,int f_size)
+        {
+            string DIR_NAME = new string(Dir_Name);
+            AssignFileName(DIR_NAME);
+            this.dir_Attr = dir_Attribute;
+            this.dir_FileSize = f_size;
+            this.dir_First_Cluster = f_Cluster;
+            Array.Clear(Dir_Empty, 0, Dir_Empty.Length);
+
+        }
 
         public void AssignFileName(string fullName) 
         {

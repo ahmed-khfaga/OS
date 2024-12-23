@@ -13,7 +13,7 @@ namespace OS
         public  Directory? parent;
         ///public int Cluster_Index;
 
-        public File_Entry(char[] name, byte dir_attr, int dir_First_Cluster, int fz, Directory pa,string Content) : base(name, dir_attr ,dir_First_Cluster)
+        public File_Entry(char[] name, byte dir_attr, int dir_First_Cluster, int fz, Directory pa,string Content="") : base(name, dir_attr ,dir_First_Cluster,fz)
         {
             this.content = Content;
             if (parent != null)
@@ -21,7 +21,7 @@ namespace OS
                 this.parent = pa;
             }
         }
-        public File_Entry(Directory_Entry d, Directory pa) : base(d.Dir_Namee, d.dir_Attr ,d.dir_First_Cluster)
+        public File_Entry(Directory_Entry d, Directory pa) : base(d.Dir_Namee, d.dir_Attr ,d.dir_First_Cluster,d.dir_FileSize)
         {
             for (int i = 0; i < 12; i++)
             {
@@ -89,44 +89,47 @@ namespace OS
                 int cluster_FAT_Index;
                 if (dir_First_Cluster != 0)
                 {
-                    Empty_My_Clusters();
-                    cluster_FAT_Index = Mini_FAT.get_Availabel_Cluster();
-                    dir_First_Cluster = cluster_FAT_Index;
+                    //Empty_My_Clusters();
+                    //cluster_FAT_Index = Mini_FAT.get_Availabel_Cluster();
+                    cluster_FAT_Index = dir_First_Cluster;
                 }
                 else
                 {
                     cluster_FAT_Index = Mini_FAT.get_Availabel_Cluster();
-                    if (cluster_FAT_Index != -1)
-                    {
+                    //if (cluster_FAT_Index != -1)
+                    //{
                         dir_First_Cluster = cluster_FAT_Index;
-                    }
+                    //}
                 }
                 int last_Cluster = -1;
                 for (int i = 0; i < bytesls.Count; i++)
                 {
-                    if (cluster_FAT_Index != -1)
-                    {
+                    //if (cluster_FAT_Index != -1)
+                    //{
                         Virtual_Disk.write_Cluster(bytesls[i], cluster_FAT_Index);
                         Mini_FAT.setNext(cluster_FAT_Index, -1);
                         if (last_Cluster != -1)
                         {
                             Mini_FAT.setNext(last_Cluster, cluster_FAT_Index);
                         }
-                        Mini_FAT.write_FAT();
+                        //Mini_FAT.write_FAT();
                         last_Cluster = cluster_FAT_Index;
                         cluster_FAT_Index = Mini_FAT.get_Availabel_Cluster();
-                    }
+                    //}
                 }
             }
             if (content == string.Empty)
             {
                 if (dir_First_Cluster != 0)
-                    Empty_My_Clusters();
+                {
+                    Empty_My_Clusters(); 
+                }
                 dir_First_Cluster = 0;
             }
-            Directory_Entry n = GetDirectory_Entry();
             if (parent != null)
             {
+                Directory_Entry n = GetDirectory_Entry();
+
                 parent.Update_Content(o, n);
 
             }
@@ -143,8 +146,7 @@ namespace OS
                 List<byte> ls = new List<byte>();
                 do
                 {
-                    //byte[] cluster_Data = Virtual_Disk.read_Cluster(cluster);
-                    //ls.AddRange(cluster_Data);
+                   
                     ls.AddRange(Virtual_Disk.read_Cluster(clusterIndex));
                     clusterIndex = next;
                     if (clusterIndex != -1)
